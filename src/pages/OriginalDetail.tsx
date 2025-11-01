@@ -158,7 +158,7 @@ const OriginalDetail = () => {
             {/* Creator Info */}
             <div className="pt-4 border-t border-white/10">
               <p className="text-white/60">
-                Created by <Link to="#" className="text-[#00eaff] hover:underline font-semibold">NexusVisions</Link>
+                Created by <Link to="/creator/nova-rhys" className="text-[#00eaff] hover:underline font-semibold">Nova Rhys</Link>
               </p>
               <p className="text-white/60 mt-2">
                 AI Models: GPT-Vision, Runway Gen-3, ElevenLabs Nova
