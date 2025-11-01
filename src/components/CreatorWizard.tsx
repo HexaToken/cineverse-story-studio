@@ -49,25 +49,36 @@ const CreatorWizard = ({ open, onOpenChange }: CreatorWizardProps) => {
       <DialogContent className="max-w-4xl bg-surface/95 backdrop-blur-xl border-2 border-primary/30 shadow-glow-purple">
         <div className="space-y-6">
           {/* Progress Steps */}
-          <div className="flex justify-between items-center">
-            {[1, 2, 3].map((stepNum) => (
-              <div key={stepNum} className="flex items-center flex-1">
-                <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 ${
-                  step >= stepNum 
-                    ? 'bg-primary border-primary shadow-glow-purple' 
-                    : 'bg-surface border-border/50'
-                }`}>
-                  {step > stepNum ? (
-                    <Check className="w-6 h-6 text-primary-foreground" />
-                  ) : (
-                    <span className={`font-display font-bold ${step >= stepNum ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
-                      {stepNum}
-                    </span>
-                  )}
+          <div className="flex justify-between items-center gap-4">
+            {[
+              { num: 1, label: "Upload Script" },
+              { num: 2, label: "Generate Voices & Visuals" },
+              { num: 3, label: "Preview Scene" }
+            ].map(({ num, label }) => (
+              <div key={num} className="flex items-center flex-1">
+                <div className="flex flex-col items-center flex-1">
+                  <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 ${
+                    step >= num 
+                      ? 'bg-primary border-primary shadow-glow-purple' 
+                      : 'bg-surface border-border/50'
+                  }`}>
+                    {step > num ? (
+                      <Check className="w-6 h-6 text-primary-foreground" />
+                    ) : (
+                      <span className={`font-display font-bold ${step >= num ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
+                        {num}
+                      </span>
+                    )}
+                  </div>
+                  <span className={`text-xs mt-2 text-center font-medium transition-colors ${
+                    step >= num ? 'text-foreground' : 'text-muted-foreground'
+                  }`}>
+                    {label}
+                  </span>
                 </div>
-                {stepNum < 3 && (
+                {num < 3 && (
                   <div className={`flex-1 h-0.5 mx-2 transition-all duration-300 ${
-                    step > stepNum ? 'bg-primary shadow-glow-cyan' : 'bg-border/50'
+                    step > num ? 'bg-primary shadow-glow-cyan' : 'bg-border/50'
                   }`} />
                 )}
               </div>
