@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { Upload, Mic, Clapperboard, DollarSign, ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
+import UniverseBuilder from "@/components/UniverseBuilder";
 
 const creatorTools = [
   {
@@ -40,9 +42,12 @@ const workflowSteps = [
 ];
 
 const Create = () => {
+  const [builderOpen, setBuilderOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-[hsl(266,100%,4%)] to-background">
       <Header />
+      <UniverseBuilder open={builderOpen} onOpenChange={setBuilderOpen} />
 
       {/* Hero Section */}
       <section className="py-20 px-4">
@@ -53,7 +58,12 @@ const Create = () => {
           <p className="text-xl md:text-2xl text-muted-foreground mb-8">
             Turn your ideas into living, AI-powered cinematic experiences
           </p>
-          <Button variant="hero" size="lg" className="text-lg px-10 py-7 h-auto">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="text-lg px-10 py-7 h-auto"
+            onClick={() => setBuilderOpen(true)}
+          >
             Start Creating
           </Button>
         </div>
@@ -187,7 +197,12 @@ const Create = () => {
             Be among the first creators to shape the future of interactive cinema.
             Join our exclusive beta program and bring your visions to life.
           </p>
-          <Button variant="heroOutline" size="lg" className="text-lg px-10 py-7 h-auto shadow-glow-magenta">
+          <Button 
+            variant="heroOutline" 
+            size="lg" 
+            className="text-lg px-10 py-7 h-auto shadow-glow-magenta"
+            onClick={() => setBuilderOpen(true)}
+          >
             Join the Beta
           </Button>
         </div>
