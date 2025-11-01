@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
+import CreatorWizard from "@/components/CreatorWizard";
 
 const Hero = () => {
+  const [wizardOpen, setWizardOpen] = useState(false);
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Gradient Overlay */}
@@ -32,13 +35,19 @@ const Hero = () => {
               Enter the Universe
             </Button>
           </Link>
-          <Link to="/create">
-            <Button variant="heroOutline" size="lg" className="text-lg px-8 py-6 h-auto">
-              Create with AI
-            </Button>
-          </Link>
+          <Button 
+            variant="heroOutline" 
+            size="lg" 
+            className="text-lg px-8 py-6 h-auto"
+            onClick={() => setWizardOpen(true)}
+          >
+            Create with AI
+          </Button>
         </div>
       </div>
+
+      {/* Creator Wizard Modal */}
+      <CreatorWizard open={wizardOpen} onOpenChange={setWizardOpen} />
 
       {/* Animated particles effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
