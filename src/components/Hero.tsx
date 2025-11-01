@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
@@ -26,12 +27,16 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-6 h-auto">
-            Enter the Universe
-          </Button>
-          <Button variant="heroOutline" size="lg" className="text-lg px-8 py-6 h-auto">
-            Create with AI
-          </Button>
+          <Link to="/universe">
+            <Button variant="hero" size="lg" className="text-lg px-8 py-6 h-auto">
+              Enter the Universe
+            </Button>
+          </Link>
+          <Link to="/create">
+            <Button variant="heroOutline" size="lg" className="text-lg px-8 py-6 h-auto">
+              Create with AI
+            </Button>
+          </Link>
         </div>
       </div>
 
