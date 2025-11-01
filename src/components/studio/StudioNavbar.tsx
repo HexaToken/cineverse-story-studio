@@ -96,7 +96,7 @@ const StudioNavbar = ({
           Preview
         </Button>
         <Button
-          onClick={onPublish}
+          onClick={() => window.location.href = '/publish'}
           className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white shadow-[0_0_20px_rgba(0,234,255,0.4)]"
         >
           <Upload className="w-4 h-4 mr-2" />
