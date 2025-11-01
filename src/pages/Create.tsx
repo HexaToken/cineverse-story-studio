@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { Upload, Mic, Clapperboard, DollarSign, ArrowRight } from "lucide-react";
+import Header from "@/components/Header";
 
 const creatorTools = [
   {
@@ -41,27 +42,7 @@ const workflowSteps = [
 const Create = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-[hsl(266,100%,4%)] to-background">
-      {/* Header Navigation */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/30">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/">
-            <h1 className="font-display text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              CINEVERSE
-            </h1>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link to="/universe" className="text-muted-foreground hover:text-foreground transition-colors">
-              Library
-            </Link>
-            <Link to="/create" className="text-foreground hover:text-secondary transition-colors">
-              Create
-            </Link>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              Profile
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="py-20 px-4">

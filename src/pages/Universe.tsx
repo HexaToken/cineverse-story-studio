@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Play, Info } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "@/components/Header";
 import story1 from "@/assets/story-1.jpg";
 import story2 from "@/assets/story-2.jpg";
 import story3 from "@/assets/story-3.jpg";
@@ -59,27 +60,7 @@ const Universe = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-[hsl(266,100%,4%)] to-background">
-      {/* Header Navigation */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/30">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/">
-            <h1 className="font-display text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              CINEVERSE
-            </h1>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link to="/universe" className="text-foreground hover:text-secondary transition-colors">
-              Library
-            </Link>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              Genres
-            </button>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              Profile
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       {/* Animated Particles Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-30">
