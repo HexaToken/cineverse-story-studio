@@ -123,10 +123,12 @@ const DashboardOverview = ({ onNewUniverse }: { onNewUniverse: () => void }) => 
                     <Play className="w-4 h-4 mr-1" />
                     View
                   </Button>
-                  <Button size="sm" className="bg-[#a24df6]/20 border border-[#a24df6]/40 text-[#a24df6] hover:bg-[#a24df6]/30">
-                    <Edit className="w-4 h-4 mr-1" />
-                    Edit
-                  </Button>
+                  <Link to="/studio">
+                    <Button size="sm" className="bg-[#a24df6]/20 border border-[#a24df6]/40 text-[#a24df6] hover:bg-[#a24df6]/30">
+                      <Edit className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                  </Link>
                 </div>
                 <div className="absolute top-3 right-3">
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
