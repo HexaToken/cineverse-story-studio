@@ -8,6 +8,7 @@ import Universe from "./pages/Universe";
 import Create from "./pages/Create";
 import StoryPreview from "./pages/StoryPreview";
 import StoryPlayer from "./pages/StoryPlayer";
+import OriginalDetail from "./pages/OriginalDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/create" element={<Create />} />
           <Route path="/preview/:id" element={<StoryPreview />} />
           <Route path="/story/:id" element={<StoryPlayer />} />
+          <Route path="/originals" element={<OriginalDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
