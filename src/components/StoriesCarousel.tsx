@@ -57,14 +57,14 @@ const StoriesCarousel = () => {
           {stories.map((story) => (
             <Card 
               key={story.id} 
-              className="group relative min-w-[300px] md:min-w-[400px] flex-shrink-0 overflow-hidden rounded-lg border-border/50 bg-card shadow-card transition-all duration-300 hover:scale-105 hover:shadow-glow-purple snap-start"
+              className="group relative min-w-[300px] md:min-w-[400px] flex-shrink-0 overflow-hidden rounded-lg border-border/50 bg-card shadow-card transition-all duration-300 hover:shadow-glow-purple snap-start"
             >
               {/* Story Image */}
               <div className="aspect-video overflow-hidden">
                 <img 
                   src={story.image} 
                   alt={story.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500"
                 />
               </div>
 

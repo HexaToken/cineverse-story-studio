@@ -43,7 +43,7 @@ const CreatorStudio = () => {
             return (
               <Card 
                 key={index}
-                className="group relative overflow-hidden bg-card/50 backdrop-blur-glass border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-glow-purple"
+                className="group relative overflow-hidden bg-card/50 backdrop-blur-glass border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-glow-purple"
               >
                 <CardContent className="p-6 space-y-4">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

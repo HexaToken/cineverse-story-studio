@@ -87,10 +87,10 @@ const Create = () => {
               return (
                 <Card
                   key={index}
-                  className="group relative overflow-hidden bg-card/30 backdrop-blur-glass border-border/50 hover:border-primary/50 transition-all duration-500 hover:scale-105 hover:shadow-glow-purple"
+                  className="group relative overflow-hidden bg-card/30 backdrop-blur-glass border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-glow-purple"
                 >
                   <CardContent className="p-8 space-y-4">
-                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${
+                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center transition-transform duration-300 ${
                       tool.color === 'secondary' ? 'bg-secondary/10 shadow-glow-cyan' :
                       tool.color === 'accent' ? 'bg-accent/10 shadow-glow-magenta' :
                       'bg-primary/10 shadow-glow-purple'

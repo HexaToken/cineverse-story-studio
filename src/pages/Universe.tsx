@@ -154,15 +154,15 @@ const Universe = () => {
               </h3>
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
                 {row.stories.map((story) => (
-                  <Card
+                <Card
                     key={story.id}
-                    className="group relative min-w-[250px] md:min-w-[320px] flex-shrink-0 overflow-hidden rounded-lg bg-card/50 backdrop-blur-glass border-border/50 transition-all duration-300 hover:scale-105 hover:shadow-glow-cyan snap-start cursor-pointer"
+                    className="group relative min-w-[250px] md:min-w-[320px] flex-shrink-0 overflow-hidden rounded-lg bg-card/50 backdrop-blur-glass border-border/50 transition-all duration-300 hover:shadow-glow-cyan snap-start cursor-pointer"
                   >
                     <div className="aspect-video overflow-hidden relative">
                       <img
                         src={story.image}
                         alt={story.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-500"
                       />
                       
                       {/* Rating Badge */}
