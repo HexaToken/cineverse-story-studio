@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import AIAssistantSidebar from "@/components/dashboard/AIAssistantSidebar";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import UniverseBuilder from "@/components/UniverseBuilder";
-import { Bell, User } from "lucide-react";
+import { Bell, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const [builderOpen, setBuilderOpen] = useState(false);
+  const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
 
   return (
     <SidebarProvider>
@@ -25,6 +27,15 @@ const Dashboard = () => {
               </div>
               
               <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => setAiAssistantOpen(!aiAssistantOpen)}
+                  className={`bg-gradient-to-r from-[#00eaff]/20 to-[#a24df6]/20 border ${
+                    aiAssistantOpen ? 'border-[#00eaff]' : 'border-[#00eaff]/40'
+                  } text-[#00eaff] hover:bg-[#00eaff]/30 shadow-[0_0_20px_rgba(0,234,255,0.3)]`}
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  AI Assistant
+                </Button>
                 <Button variant="ghost" size="icon" className="text-white/60 hover:text-[#00eaff] hover:bg-[#00eaff]/10">
                   <Bell className="w-5 h-5" />
                 </Button>
@@ -53,8 +64,27 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* AI Assistant Sidebar */}
+      <AIAssistantSidebar isOpen={aiAssistantOpen} onClose={() => setAiAssistantOpen(false)} />
+
       {/* Universe Builder Modal */}
       <UniverseBuilder open={builderOpen} onOpenChange={setBuilderOpen} />
+
+      {/* Floating AI Trigger (when sidebar is closed) */}
+      {!aiAssistantOpen && (
+        <button
+          onClick={() => setAiAssistantOpen(true)}
+          className="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] shadow-[0_0_40px_rgba(0,234,255,0.6)] hover:shadow-[0_0_50px_rgba(0,234,255,0.8)] transition-all z-40 flex items-center justify-center group animate-pulse"
+        >
+          <Sparkles className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
+          <div className="absolute -top-2 -right-2 w-4 h-4 bg-[#a24df6] rounded-full border-2 border-[#0a0b1a] animate-ping" />
+          
+          {/* Tooltip */}
+          <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-[#0a0b1a]/95 backdrop-blur-sm border border-[#00eaff]/40 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            <p className="text-sm text-white font-medium">Ask CineVerse AI</p>
+          </div>
+        </button>
+      )}
     </SidebarProvider>
   );
 };
