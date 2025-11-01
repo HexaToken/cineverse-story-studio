@@ -177,12 +177,16 @@ const Universe = () => {
                           An AI-powered interactive experience that evolves with your choices.
                         </p>
                         <div className="flex gap-2">
-                          <Button variant="hero" size="sm">
-                            Enter Story
-                          </Button>
-                          <Button variant="heroOutline" size="sm">
-                            Preview
-                          </Button>
+                          <Link to={`/story/${story.id}`}>
+                            <Button variant="hero" size="sm">
+                              Enter Story
+                            </Button>
+                          </Link>
+                          <Link to={`/preview/${story.id}`}>
+                            <Button variant="heroOutline" size="sm">
+                              Preview
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </div>
