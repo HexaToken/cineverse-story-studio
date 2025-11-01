@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Universe from "./pages/Universe";
 import Create from "./pages/Create";
 import Discover from "./pages/Discover";
+import UniverseViewer from "./pages/UniverseViewer";
 import StoryPreview from "./pages/StoryPreview";
 import StoryPlayer from "./pages/StoryPlayer";
 import OriginalDetail from "./pages/OriginalDetail";
@@ -27,6 +28,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/universe" element={<Universe />} />
+          <Route path="/universe/:id" element={<UniverseViewer />} />
           <Route path="/create" element={<Create />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/preview/:id" element={<StoryPreview />} />

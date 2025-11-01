@@ -141,29 +141,31 @@ const Discover = () => {
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
             {trendingUniverses.map((universe) => (
-              <Card
+              <Link
                 key={universe.id}
-                className="flex-shrink-0 w-80 bg-white/5 backdrop-blur-xl border-[#00eaff]/20 hover:border-[#00eaff]/40 transition-all group cursor-pointer"
+                to={`/universe/${universe.id}`}
               >
-                <div className="relative">
-                  <Badge className="absolute top-3 left-3 bg-red-500/80 text-white border-0 z-10">
-                    🔥 Trending
-                  </Badge>
-                  <div className={`aspect-video bg-gradient-to-br from-[#00eaff]/30 to-[#a24df6]/30 flex items-center justify-center`}>
-                    <Play className="w-16 h-16 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
-                  </div>
-                  <div className="p-4 space-y-2">
-                    <h3 className="font-display text-xl font-bold text-white">{universe.title}</h3>
-                    <div className="flex items-center justify-between">
-                      <p className="text-white/60 text-sm">by @{universe.creator}</p>
-                      <Badge className="bg-[#00eaff]/10 text-[#00eaff] border-[#00eaff]/30">
-                        {universe.genre}
-                      </Badge>
+                <Card className="flex-shrink-0 w-80 bg-white/5 backdrop-blur-xl border-[#00eaff]/20 hover:border-[#00eaff]/40 transition-all group cursor-pointer">
+                  <div className="relative">
+                    <Badge className="absolute top-3 left-3 bg-red-500/80 text-white border-0 z-10">
+                      🔥 Trending
+                    </Badge>
+                    <div className={`aspect-video bg-gradient-to-br from-[#00eaff]/30 to-[#a24df6]/30 flex items-center justify-center`}>
+                      <Play className="w-16 h-16 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
                     </div>
-                    <p className="text-white/50 text-sm">{universe.views} views</p>
+                    <div className="p-4 space-y-2">
+                      <h3 className="font-display text-xl font-bold text-white">{universe.title}</h3>
+                      <div className="flex items-center justify-between">
+                        <p className="text-white/60 text-sm">by @{universe.creator}</p>
+                        <Badge className="bg-[#00eaff]/10 text-[#00eaff] border-[#00eaff]/30">
+                          {universe.genre}
+                        </Badge>
+                      </div>
+                      <p className="text-white/50 text-sm">{universe.views} views</p>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             ))}
           </div>
         </section>
