@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Universe from "./pages/Universe";
 import Create from "./pages/Create";
+import Discover from "./pages/Discover";
 import StoryPreview from "./pages/StoryPreview";
 import StoryPlayer from "./pages/StoryPlayer";
 import OriginalDetail from "./pages/OriginalDetail";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/universe" element={<Universe />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/discover" element={<Discover />} />
           <Route path="/preview/:id" element={<StoryPreview />} />
           <Route path="/story/:id" element={<StoryPlayer />} />
           <Route path="/originals" element={<OriginalDetail />} />
