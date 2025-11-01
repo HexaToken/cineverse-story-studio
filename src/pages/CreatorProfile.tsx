@@ -159,10 +159,12 @@ const CreatorProfile = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white shadow-[0_0_30px_rgba(0,234,255,0.5)] hover:shadow-[0_0_40px_rgba(0,234,255,0.7)] h-12 px-8 text-base">
-                <Play className="w-5 h-5 mr-2" />
-                Watch Universes
-              </Button>
+              <Link to="/dashboard">
+                <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white shadow-[0_0_30px_rgba(0,234,255,0.5)] hover:shadow-[0_0_40px_rgba(0,234,255,0.7)] h-12 px-8 text-base">
+                  <Play className="w-5 h-5 mr-2" />
+                  Open Studio Dashboard
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 className={`border-2 h-12 px-8 text-base transition-all ${

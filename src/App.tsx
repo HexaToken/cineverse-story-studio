@@ -10,6 +10,7 @@ import StoryPreview from "./pages/StoryPreview";
 import StoryPlayer from "./pages/StoryPlayer";
 import OriginalDetail from "./pages/OriginalDetail";
 import CreatorProfile from "./pages/CreatorProfile";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/story/:id" element={<StoryPlayer />} />
           <Route path="/originals" element={<OriginalDetail />} />
           <Route path="/creator/:id" element={<CreatorProfile />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
