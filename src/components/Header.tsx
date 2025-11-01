@@ -36,7 +36,6 @@ const Header = () => {
   ];
 
   const navLinks = [
-    { name: "HOME", href: "/" },
     { name: "UNIVERSE", href: "/universe", hasDropdown: true },
     { name: "CREATE WITH AI", href: "/create" },
     { name: "ORIGINALS", href: "#originals" },
