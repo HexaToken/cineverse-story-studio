@@ -91,7 +91,7 @@ const UniverseSphere = ({
   });
 
   return (
-    <group position={node.position} opacity={isFiltered ? 1 : 0.2}>
+    <group position={node.position}>
       {/* Outer glow ring */}
       <mesh>
         <torusGeometry args={[baseSize + 0.08, 0.02, 16, 100]} />
@@ -110,7 +110,6 @@ const UniverseSphere = ({
         onClick={() => isFiltered && onClick()}
         onPointerOver={() => isFiltered && onHover(true)}
         onPointerOut={() => isFiltered && onHover(false)}
-        style={{ cursor: isFiltered ? 'pointer' : 'default' }}
       >
         <sphereGeometry args={[baseSize, 32, 32]} />
         <meshStandardMaterial

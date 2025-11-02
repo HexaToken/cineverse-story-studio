@@ -14,28 +14,22 @@ const FloatingLabels = ({
   duration = 3,
   distance = 10
 }: FloatingLabelsProps) => {
-  const floatVariants = {
-    initial: {
-      y: 0,
-      opacity: 0.5
-    },
-    animate: {
-      y: [-distance, distance, -distance],
-      opacity: [0.5, 1, 0.5],
-      transition: {
+  return (
+    <motion.div
+      initial={{
+        y: 0,
+        opacity: 0.5
+      }}
+      animate={{
+        y: [-distance, distance, -distance],
+        opacity: [0.5, 1, 0.5],
+      }}
+      transition={{
         duration,
         delay,
         repeat: Infinity,
-        ease: 'easeInOut'
-      }
-    }
-  };
-
-  return (
-    <motion.div
-      variants={floatVariants}
-      initial="initial"
-      animate="animate"
+        ease: "easeInOut"
+      }}
     >
       {children}
     </motion.div>

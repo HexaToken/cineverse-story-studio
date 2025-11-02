@@ -31,23 +31,23 @@ const CosmoHeading = React.forwardRef<HTMLHeadingElement, CosmoHeadingProps>(
     },
     ref,
   ) => {
-    const Element = level as keyof JSX.IntrinsicElements;
+    const HeadingTag = level;
 
-    return (
-      <Element
-        ref={ref as any}
-        className={cn(
+    return React.createElement(
+      HeadingTag,
+      {
+        ref,
+        className: cn(
           'font-display text-white/90 transition-colors duration-300',
           sizeStyles[size],
           gradient &&
             'bg-gradient-to-r from-[#00eaff] via-[#a24df6] to-[#ff006e] bg-clip-text text-transparent',
           glow && 'drop-shadow-[0_0_20px_rgba(0,234,255,0.5)]',
           className,
-        )}
-        {...props}
-      >
-        {children}
-      </Element>
+        ),
+        ...props
+      },
+      children
     );
   },
 );

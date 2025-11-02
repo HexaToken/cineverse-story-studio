@@ -102,7 +102,7 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
   ];
 
   // Context-aware prompts based on creation phase
-  const phasePrompts: Record<CreationPhase, typeof suggestedPrompts> = {
+  const phasePrompts: Record<CreationPhase, Array<{ text: string; icon: string; mode: string }>> = {
     concept: [
       { text: "Generate a compelling story logline", icon: "✍️", mode: 'story' },
       { text: "Define the core setting and rules", icon: "🪐", mode: 'story' },

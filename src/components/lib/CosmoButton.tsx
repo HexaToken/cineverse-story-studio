@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface CosmoButtonProps extends ButtonProps {
+interface CosmoButtonProps extends Omit<ButtonProps, 'size'> {
   cosmicVariant?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'glowing' | 'outline';
   size?: 'sm' | 'md' | 'lg' | 'icon';
 }
@@ -19,6 +19,8 @@ const cosmoVariants = {
 
 const CosmoButton = React.forwardRef<HTMLButtonElement, CosmoButtonProps>(
   ({ cosmicVariant = 'primary', className, size = 'md', ...props }, ref) => {
+    const buttonSize = size === 'md' ? 'default' : size;
+    
     return (
       <Button
         ref={ref}
@@ -27,7 +29,7 @@ const CosmoButton = React.forwardRef<HTMLButtonElement, CosmoButtonProps>(
           cosmoVariants[cosmicVariant],
           className,
         )}
-        size={size}
+        size={buttonSize as "default" | "sm" | "lg" | "icon"}
         variant="ghost"
         {...props}
       />
