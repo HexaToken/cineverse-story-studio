@@ -36,3 +36,9 @@ export type { CreatorCardProps } from './CreatorCard';
 
 export { StoryCard } from './StoryCard';
 export type { StoryCardProps } from './StoryCard';
+
+export { RemixCard } from './RemixCard';
+export type { RemixCardProps } from './RemixCard';
+
+export { CollaboratorsList } from './CollaboratorsList';
+export type { CollaboratorsListProps } from './CollaboratorsList';
