@@ -569,7 +569,7 @@ const ExploreMap = () => {
                 </div>
                 <button
                   onClick={() => setSelectedNode(null)}
-                  className="text-white/60 hover:text-white"
+                  className="text-white/60 hover:text-white text-xl"
                 >
                   ✕
                 </button>
@@ -579,36 +579,45 @@ const ExploreMap = () => {
                 <Play className="w-12 h-12 text-white/50" />
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <Badge className="bg-[#00eaff]/10 text-[#00eaff] border-[#00eaff]/30">
                   {selectedNode.genre}
                 </Badge>
-                <Badge className="bg-white/5 text-white/70">
-                  ⭐ {selectedNode.rating}
+                <Badge className="bg-yellow-500/10 text-yellow-300">
+                  <Star className="w-3 h-3 mr-1 fill-current" />
+                  {selectedNode.rating}/5
                 </Badge>
               </div>
 
-              <div className="flex items-center gap-4 text-white/60 text-sm">
-                <span className="flex items-center gap-1">
-                  <Eye className="w-4 h-4" />
-                  {selectedNode.views}
-                </span>
+              <div className="grid grid-cols-2 gap-3 py-3 border-y border-white/10">
+                <div>
+                  <p className="text-white/50 text-xs uppercase tracking-wider">Views</p>
+                  <p className="text-white font-semibold text-sm">{selectedNode.views}</p>
+                </div>
+                <div>
+                  <p className="text-white/50 text-xs uppercase tracking-wider">Creator</p>
+                  <p className="text-white font-semibold text-sm">{selectedNode.creator}</p>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
-                <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
-                  <Play className="w-4 h-4 mr-2" />
-                  Watch
+                <Button asChild className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
+                  <Link to={`/universe/${selectedNode.id}`}>
+                    <Play className="w-4 h-4 mr-2" />
+                    Watch
+                  </Link>
                 </Button>
-                <Button variant="outline" className="border-white/20 text-white">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/5">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Discuss
                 </Button>
-                <Button variant="outline" className="border-white/20 text-white">
-                  <Repeat2 className="w-4 h-4 mr-2" />
-                  Remix
+                <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/5">
+                  <Link to={`/remix/${selectedNode.id}`}>
+                    <Repeat2 className="w-4 h-4 mr-2" />
+                    Remix
+                  </Link>
                 </Button>
-                <Button variant="outline" className="border-white/20 text-white">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/5">
                   <Share2 className="w-4 h-4 mr-2" />
                   Share
                 </Button>
