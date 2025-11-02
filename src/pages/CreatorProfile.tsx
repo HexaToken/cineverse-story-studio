@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Play, Share2, Heart, Star, Eye, MessageCircle, Sparkles, Trophy, Users, Youtube, Twitter, Globe, Send, TrendingUp, BarChart3, Clock, Repeat2 } from "lucide-react";
+import { Play, Share2, Heart, Star, Eye, MessageCircle, Sparkles, Trophy, Users, Youtube, Twitter, Globe, Send, TrendingUp, BarChart3, Clock, Repeat2, Clapperboard } from "lucide-react";
 
 const CreatorProfile = () => {
   const { id } = useParams();
