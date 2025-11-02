@@ -166,19 +166,25 @@ const CreatorProfile = () => {
 
             <div className="flex items-center justify-center gap-4">
               <a
-                href="#"
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#00eaff]/30 flex items-center justify-center hover:bg-[#00eaff]/20 hover:border-[#00eaff] transition-all group"
               >
                 <Twitter className="w-5 h-5 text-white/60 group-hover:text-[#00eaff]" />
               </a>
               <a
-                href="#"
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#a24df6]/30 flex items-center justify-center hover:bg-[#a24df6]/20 hover:border-[#a24df6] transition-all group"
               >
                 <Youtube className="w-5 h-5 text-white/60 group-hover:text-[#a24df6]" />
               </a>
               <a
-                href="#"
+                href="https://cineverse.app"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#00eaff]/30 flex items-center justify-center hover:bg-[#00eaff]/20 hover:border-[#00eaff] transition-all group"
               >
                 <Globe className="w-5 h-5 text-white/60 group-hover:text-[#00eaff]" />
