@@ -45,7 +45,7 @@ const Create = () => {
   const [builderOpen, setBuilderOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-[hsl(266,100%,4%)] to-background">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0b1a] to-[#10182e]">
       <Header />
       <UniverseBuilder open={builderOpen} onOpenChange={setBuilderOpen} />
 
