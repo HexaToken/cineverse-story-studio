@@ -26,5 +26,13 @@ export type { Collaborator, CollaborationProject, Comment, CollaborationContextT
 export { SearchProvider, useSearch } from './SearchContext';
 export type { SearchResult, SearchFilters, SearchContextType } from './SearchContext';
 
+// Notification Context
+export { NotificationProvider, useNotification } from './NotificationContext';
+export type { Notification, NotificationType, NotificationContextType } from './NotificationContext';
+
+// Atlas Companion Context
+export { AtlasCompanionProvider, useAtlasCompanion } from './AtlasCompanionContext';
+export type { Recommendation, AtlasCompanionContextType } from './AtlasCompanionContext';
+
 // App Provider
 export { AppProvider } from './AppProvider';

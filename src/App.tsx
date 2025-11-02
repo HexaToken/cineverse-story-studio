@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AtlasCompanion } from "@/components/AtlasCompanion";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
 import ScrollProgress from "@/components/ScrollProgress";
+import NotificationContainer from "@/components/Notifications/NotificationContainer";
 import { AppProvider } from "@/context";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <ScrollProgress />
           <AnimatedRoutes />
           <AtlasCompanion />
+          <NotificationContainer />
         </BrowserRouter>
       </TooltipProvider>
     </AppProvider>
