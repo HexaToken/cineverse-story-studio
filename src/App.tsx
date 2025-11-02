@@ -15,6 +15,7 @@ import StoryPreview from "./pages/StoryPreview";
 import StoryPlayer from "./pages/StoryPlayer";
 import OriginalDetail from "./pages/OriginalDetail";
 import CreatorProfile from "./pages/CreatorProfile";
+import CreatorHub from "./pages/CreatorHub";
 import Dashboard from "./pages/Dashboard";
 import Studio from "./pages/Studio";
 import Publish from "./pages/Publish";
