@@ -341,34 +341,33 @@ const CreatorProfile = () => {
               <h2 className="font-display text-4xl font-bold text-white">Signature Universes</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {featuredWorks.map((work) => (
-                  <Card
-                    key={work.id}
-                    className="group bg-white/5 backdrop-blur-sm border border-[#00eaff]/20 overflow-hidden cursor-pointer hover:border-[#a24df6]/50 transition-all hover:shadow-[0_0_30px_rgba(162,77,246,0.3)]"
-                  >
-                    <div className="relative aspect-[2/3] bg-gradient-to-br from-[#1a1a2e] to-[#0a0b1a] overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00eaff]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <Play className="w-16 h-16 text-white/40 mb-4 group-hover:text-[#00eaff] group-hover:scale-110 transition-all" />
-                        <h3 className="font-display text-2xl font-bold text-white mb-2">{work.title}</h3>
-                        <Badge className="bg-[#a24df6]/20 text-[#a24df6] border border-[#a24df6]/40 mb-3">
-                          {work.genre}
-                        </Badge>
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <p className="text-white/90 text-sm italic mb-3">{work.tagline}</p>
-                        <div className="flex items-center justify-between text-xs text-white/60">
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 text-[#00eaff] fill-[#00eaff]" />
-                            <span>{work.rating}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Eye className="w-4 h-4" />
-                            <span>{work.views}</span>
+                  <Link key={work.id} to={`/universe/${work.id}`}>
+                    <Card className="group bg-white/5 backdrop-blur-sm border border-[#00eaff]/20 overflow-hidden cursor-pointer hover:border-[#a24df6]/50 transition-all hover:shadow-[0_0_30px_rgba(162,77,246,0.3)] h-full">
+                      <div className="relative aspect-[2/3] bg-gradient-to-br from-[#1a1a2e] to-[#0a0b1a] overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00eaff]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                          <Play className="w-16 h-16 text-white/40 mb-4 group-hover:text-[#00eaff] group-hover:scale-110 transition-all" />
+                          <h3 className="font-display text-2xl font-bold text-white mb-2">{work.title}</h3>
+                          <Badge className="bg-[#a24df6]/20 text-[#a24df6] border border-[#a24df6]/40 mb-3">
+                            {work.genre}
+                          </Badge>
+                        </div>
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                          <p className="text-white/90 text-sm italic mb-3">{work.tagline}</p>
+                          <div className="flex items-center justify-between text-xs text-white/60">
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 text-[#00eaff] fill-[#00eaff]" />
+                              <span>{work.rating}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Eye className="w-4 h-4" />
+                              <span>{work.views}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -428,10 +427,12 @@ const CreatorProfile = () => {
                           <MessageCircle className="w-5 h-5 mr-2" />
                           Comment
                         </Button>
-                        <Button variant="ghost" className="text-white/70 hover:text-[#a24df6]">
-                          <Repeat2 className="w-5 h-5 mr-2" />
-                          Remix
-                        </Button>
+                        <Link to="/studio">
+                          <Button variant="ghost" className="text-white/70 hover:text-[#a24df6]">
+                            <Repeat2 className="w-5 h-5 mr-2" />
+                            Remix
+                          </Button>
+                        </Link>
                         <Button variant="ghost" className="text-white/70 hover:text-white">
                           <Share2 className="w-5 h-5 mr-2" />
                           Share
