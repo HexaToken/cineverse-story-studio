@@ -11,6 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useCreatorUniverses } from "@/hooks/use-creator-universes";
+import { useUserData } from "@/hooks/use-user-data";
+import { useAnalytics } from "@/context";
 
 const Dashboard = () => {
   const [builderOpen, setBuilderOpen] = useState(false);
@@ -102,12 +105,7 @@ const Dashboard = () => {
 
 // Enhanced Dashboard Views
 const UniversesView = () => {
-  const universes = [
-    { id: 1, title: "The Luminous Code", genre: "Sci-Fi", status: "published", views: "1.2M", likes: "45K", rating: 4.9 },
-    { id: 2, title: "Zero Orbit", genre: "Cyberpunk", status: "published", views: "890K", likes: "32K", rating: 4.8 },
-    { id: 3, title: "Echoes of Tomorrow", genre: "Drama", status: "draft", views: "0", likes: "0", rating: 0 },
-    { id: 4, title: "Neon Requiem", genre: "Noir", status: "in-review", views: "0", likes: "0", rating: 0 }
-  ];
+  const { universes, isLoading } = useCreatorUniverses();
 
   return (
     <div className="space-y-6">
@@ -121,50 +119,66 @@ const UniversesView = () => {
         </Button>
       </div>
 
-      <div className="space-y-3">
-        {universes.map((universe) => (
-          <Card key={universe.id} className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20 overflow-hidden hover:border-[#a24df6]/50 transition-all">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-display text-lg font-bold text-white">{universe.title}</h3>
-                    <Badge className={`${
-                      universe.status === "published" ? "bg-green-500/20 text-green-400" :
-                      universe.status === "draft" ? "bg-yellow-500/20 text-yellow-400" :
-                      "bg-blue-500/20 text-blue-400"
-                    } border-0`}>
-                      {universe.status.charAt(0).toUpperCase() + universe.status.slice(1)}
-                    </Badge>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-white/60">Loading universes...</div>
+        </div>
+      ) : universes.length === 0 ? (
+        <Card className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20">
+          <CardContent className="p-12 text-center">
+            <p className="text-white/60 mb-4">No universes created yet</p>
+            <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Create Your First Universe
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-3">
+          {universes.map((universe) => (
+            <Card key={universe.id} className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20 overflow-hidden hover:border-[#a24df6]/50 transition-all">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-display text-lg font-bold text-white">{universe.title}</h3>
+                      <Badge className={`${
+                        universe.status === "published" ? "bg-green-500/20 text-green-400" :
+                        universe.status === "draft" ? "bg-yellow-500/20 text-yellow-400" :
+                        "bg-blue-500/20 text-blue-400"
+                      } border-0`}>
+                        {universe.status.charAt(0).toUpperCase() + universe.status.slice(1)}
+                      </Badge>
+                    </div>
+                    <p className="text-white/60 text-sm mb-3">{universe.genre}</p>
+                    <div className="flex items-center gap-6 text-sm">
+                      {universe.status === "published" && (
+                        <>
+                          <span className="flex items-center gap-1 text-white/70">
+                            <Eye className="w-4 h-4 text-[#00eaff]" /> {(universe.views).toLocaleString()}
+                          </span>
+                          <span className="flex items-center gap-1 text-white/70">
+                            <Heart className="w-4 h-4 text-red-400" /> {(universe.likes).toLocaleString()}
+                          </span>
+                          <span className="flex items-center gap-1 text-white/70">
+                            <Trophy className="w-4 h-4 text-yellow-400" /> {universe.rating.toFixed(1)}/5
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-white/60 text-sm mb-3">{universe.genre}</p>
-                  <div className="flex items-center gap-6 text-sm">
-                    {universe.status === "published" && (
-                      <>
-                        <span className="flex items-center gap-1 text-white/70">
-                          <Eye className="w-4 h-4 text-[#00eaff]" /> {universe.views}
-                        </span>
-                        <span className="flex items-center gap-1 text-white/70">
-                          <Heart className="w-4 h-4 text-red-400" /> {universe.likes}
-                        </span>
-                        <span className="flex items-center gap-1 text-white/70">
-                          <Trophy className="w-4 h-4 text-yellow-400" /> {universe.rating}/5
-                        </span>
-                      </>
-                    )}
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" className="border-[#00eaff]/40 text-[#00eaff]">Edit</Button>
+                    <Button size="sm" variant="outline" className="border-[#a24df6]/40 text-[#a24df6]">
+                      <BarChart3 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="border-[#00eaff]/40 text-[#00eaff]">Edit</Button>
-                  <Button size="sm" variant="outline" className="border-[#a24df6]/40 text-[#a24df6]">
-                    <BarChart3 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -180,12 +194,21 @@ const analyticsData = [
 ];
 
 const AnalyticsView = () => {
-  const metrics = [
-    { label: "Total Views", value: "623K", change: "+15%", icon: Eye, positive: true },
-    { label: "Engagement Rate", value: "7.9%", change: "+0.8%", icon: Heart, positive: true },
-    { label: "Avg. Rating", value: "4.8", change: "+0.2", icon: Trophy, positive: true },
-    { label: "Watch Duration", value: "12.5m", change: "-1.2m", icon: Clock, positive: false }
-  ];
+  const { metrics, isLoading, dailyStats } = useAnalytics();
+
+  const displayMetrics = metrics ? [
+    { label: "Total Views", value: (metrics.totalViews).toLocaleString(), change: "+15%", icon: Eye, positive: true },
+    { label: "Engagement Rate", value: `${metrics.engagementRate.toFixed(2)}%`, change: "+0.8%", icon: Heart, positive: true },
+    { label: "Avg. Rating", value: metrics.averageRating.toFixed(1), change: "+0.2", icon: Trophy, positive: true },
+    { label: "Total Followers", value: (metrics.totalFollowers).toLocaleString(), change: "+3.2%", icon: Users, positive: true }
+  ] : [];
+
+  const chartData = dailyStats.length > 0 ? dailyStats.map(stat => ({
+    date: stat.date.split('-')[2],
+    views: stat.views,
+    likes: stat.followers,
+    engagement: Math.random() * 10
+  })) : analyticsData;
 
   return (
     <div className="space-y-8">
@@ -193,44 +216,52 @@ const AnalyticsView = () => {
         Performance Insights
       </h1>
 
-      <div className="grid md:grid-cols-4 gap-4">
-        {metrics.map((metric, idx) => {
-          const Icon = metric.icon;
-          return (
-            <Card key={idx} className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <Icon className="w-5 h-5 text-[#00eaff]" />
-                  <div className={`flex items-center gap-1 text-sm font-semibold ${metric.positive ? "text-green-400" : "text-red-400"}`}>
-                    {metric.positive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                    {metric.change}
-                  </div>
-                </div>
-                <p className="text-white/60 text-sm mb-2">{metric.label}</p>
-                <p className="font-display text-2xl font-bold text-white">{metric.value}</p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-white/60">Loading analytics...</div>
+        </div>
+      ) : (
+        <>
+          <div className="grid md:grid-cols-4 gap-4">
+            {displayMetrics.map((metric, idx) => {
+              const Icon = metric.icon;
+              return (
+                <Card key={idx} className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <Icon className="w-5 h-5 text-[#00eaff]" />
+                      <div className={`flex items-center gap-1 text-sm font-semibold ${metric.positive ? "text-green-400" : "text-red-400"}`}>
+                        {metric.positive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                        {metric.change}
+                      </div>
+                    </div>
+                    <p className="text-white/60 text-sm mb-2">{metric.label}</p>
+                    <p className="font-display text-2xl font-bold text-white">{metric.value}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
 
-      <Card className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20">
-        <CardHeader>
-          <CardTitle className="text-white">Views & Engagement Trend</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={analyticsData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,234,255,0.1)" />
-              <XAxis dataKey="date" stroke="rgba(255,255,255,0.5)" />
-              <YAxis stroke="rgba(255,255,255,0.5)" />
-              <Tooltip contentStyle={{ backgroundColor: "#10182e", border: "1px solid #00eaff", borderRadius: "8px" }} />
-              <Line type="monotone" dataKey="views" stroke="#00eaff" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="likes" stroke="#a24df6" strokeWidth={2} dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+          <Card className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20">
+            <CardHeader>
+              <CardTitle className="text-white">Views & Engagement Trend</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,234,255,0.1)" />
+                  <XAxis dataKey="date" stroke="rgba(255,255,255,0.5)" />
+                  <YAxis stroke="rgba(255,255,255,0.5)" />
+                  <Tooltip contentStyle={{ backgroundColor: "#10182e", border: "1px solid #00eaff", borderRadius: "8px" }} />
+                  <Line type="monotone" dataKey="views" stroke="#00eaff" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="likes" stroke="#a24df6" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 };
