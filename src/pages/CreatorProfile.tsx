@@ -347,7 +347,15 @@ const CreatorProfile = () => {
           {/* Universes Tab */}
           {activeTab === "universes" && (
             <div className="space-y-6">
-              <h2 className="font-display text-4xl font-bold text-white">Signature Universes</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white">Signature Universes</h2>
+                <Link to="/studio">
+                  <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Create New Universe
+                  </Button>
+                </Link>
+              </div>
               <div className="grid md:grid-cols-3 gap-6">
                 {featuredWorks.map((work) => (
                   <Link key={work.id} to={`/universe/${work.id}`}>
