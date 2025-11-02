@@ -46,7 +46,7 @@ const stories = [
 
 const StoriesCarousel = () => {
   return (
-    <section className="py-20 px-4 bg-background">
+    <section className="py-20 px-4 bg-gradient-to-b from-[#0a0b1a] to-[#10182e]">
       <div className="container mx-auto">
         <h2 className="font-display text-3xl md:text-5xl font-bold mb-12 text-center">
           Featured Stories

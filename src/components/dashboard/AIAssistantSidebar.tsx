@@ -25,18 +25,74 @@ interface Message {
 
 type AssistantMode = 'story' | 'visual' | 'voice' | 'insight';
 
+type CreationPhase = 'concept' | 'scriptwriting' | 'visual' | 'audio' | 'review' | 'publishing';
+
 interface AIAssistantSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  currentPhase?: CreationPhase;
+  universeTitle?: string;
 }
 
-const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
+const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', universeTitle = "Untitled Universe" }: AIAssistantSidebarProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [mode, setMode] = useState<AssistantMode>('story');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Phase-specific tips and guidance
+  const phaseGuidance: Record<CreationPhase, { tips: string[]; recommendedModes: AssistantMode[] }> = {
+    concept: {
+      tips: [
+        "Start with a core concept or logline",
+        "Define your universe's core rules and setting",
+        "Consider your target audience and genre"
+      ],
+      recommendedModes: ['story', 'insight']
+    },
+    scriptwriting: {
+      tips: [
+        "Develop your main character arc",
+        "Structure your three-act narrative",
+        "Write compelling dialogue exchanges"
+      ],
+      recommendedModes: ['story', 'voice']
+    },
+    visual: {
+      tips: [
+        "Define the visual style and color palette",
+        "Create detailed scene composition prompts",
+        "Specify lighting, mood, and atmosphere"
+      ],
+      recommendedModes: ['visual', 'story']
+    },
+    audio: {
+      tips: [
+        "Cast voice actors for each character",
+        "Select music themes and emotional beats",
+        "Plan sound effects and ambience"
+      ],
+      recommendedModes: ['voice', 'insight']
+    },
+    review: {
+      tips: [
+        "Review pacing and narrative flow",
+        "Check consistency in visuals and audio",
+        "Gather feedback from test audience"
+      ],
+      recommendedModes: ['insight', 'story']
+    },
+    publishing: {
+      tips: [
+        "Create compelling metadata and tags",
+        "Plan promotional strategy",
+        "Set monetization and privacy settings"
+      ],
+      recommendedModes: ['insight', 'story']
+    }
+  };
 
   const modes = [
     { id: 'story' as AssistantMode, label: 'Story', icon: Film, color: '#00eaff' },
@@ -45,14 +101,47 @@ const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
     { id: 'insight' as AssistantMode, label: 'Insight', icon: BarChart3, color: '#00eaff' }
   ];
 
-  const suggestedPrompts = [
-    { text: "Generate a story logline", icon: "✍️", mode: 'story' },
-    { text: "Describe my main universe setting", icon: "🪐", mode: 'story' },
-    { text: "Cast AI voice actors for my scene", icon: "🎭", mode: 'voice' },
-    { text: "Suggest cinematic music themes", icon: "🎶", mode: 'voice' },
-    { text: "Explain how to monetize my universe", icon: "💡", mode: 'insight' },
-    { text: "Show me analytics for my last release", icon: "🧩", mode: 'insight' }
-  ];
+  // Context-aware prompts based on creation phase
+  const phasePrompts: Record<CreationPhase, typeof suggestedPrompts> = {
+    concept: [
+      { text: "Generate a compelling story logline", icon: "✍️", mode: 'story' },
+      { text: "Define the core setting and rules", icon: "🪐", mode: 'story' },
+      { text: "Who is my target audience?", icon: "👥", mode: 'insight' },
+      { text: "What genres would this fit?", icon: "🎬", mode: 'story' }
+    ],
+    scriptwriting: [
+      { text: "Develop the main character arc", icon: "🎭", mode: 'story' },
+      { text: "Write a three-act story structure", icon: "📖", mode: 'story' },
+      { text: "Cast AI voice actors for my characters", icon: "🎤", mode: 'voice' },
+      { text: "Refine dialogue for this scene", icon: "💬", mode: 'story' }
+    ],
+    visual: [
+      { text: "Create visual prompts for this scene", icon: "🎨", mode: 'visual' },
+      { text: "Define color palette and mood", icon: "🌈", mode: 'visual' },
+      { text: "Suggest cinematic camera movements", icon: "📹", mode: 'visual' },
+      { text: "Generate detailed scene compositions", icon: "🖼️", mode: 'visual' }
+    ],
+    audio: [
+      { text: "Suggest voice actors and tones", icon: "🎭", mode: 'voice' },
+      { text: "Generate music themes for emotional beats", icon: "🎶", mode: 'voice' },
+      { text: "Plan sound design and effects", icon: "🔊", mode: 'voice' },
+      { text: "Optimize audio levels and mixing", icon: "🎚️", mode: 'voice' }
+    ],
+    review: [
+      { text: "Check narrative pacing and flow", icon: "⏱️", mode: 'story' },
+      { text: "Verify visual consistency", icon: "✅", mode: 'visual' },
+      { text: "Analyze engagement potential", icon: "📊", mode: 'insight' },
+      { text: "Suggest improvements based on feedback", icon: "💡", mode: 'insight' }
+    ],
+    publishing: [
+      { text: "Create compelling title and description", icon: "📝", mode: 'story' },
+      { text: "Generate tags and metadata", icon: "🏷️", mode: 'story' },
+      { text: "Plan monetization strategy", icon: "💰", mode: 'insight' },
+      { text: "Create promotional campaign", icon: "📢", mode: 'insight' }
+    ]
+  };
+
+  const suggestedPrompts = phasePrompts[currentPhase];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -62,18 +151,31 @@ const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
     scrollToBottom();
   }, [messages]);
 
+  const getWelcomeMessage = () => {
+    const phaseMessages: Record<CreationPhase, string> = {
+      concept: `Great! Let's build "${universeTitle}" from the ground up 🌌 I can help you develop the core concept, define your universe's rules, and shape your vision. What's your starting point?`,
+      scriptwriting: `Now for the fun part — bringing "${universeTitle}" to life through story 📖 I'll help with character development, dialogue, and narrative structure. Ready to write?`,
+      visual: `Time to visualize "${universeTitle}" 🎨 I can generate detailed visual prompts, define your aesthetic, and suggest cinematography. What scene shall we create?`,
+      audio: `Let's add voice and music to "${universeTitle}" 🎵 I'll help with voice casting, music themes, and sound design. Who are your characters?`,
+      review: `Almost there! Let's polish "${universeTitle}" to perfection ✨ I can help verify consistency, analyze pacing, and gather insights. What needs refining?`,
+      publishing: `Ready to launch "${universeTitle}" to the world 🚀 I'll help with metadata, promotion, and monetization strategy. What's your next move?`
+    };
+
+    return phaseMessages[currentPhase];
+  };
+
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       // Welcome message
       setTimeout(() => {
         setMessages([{
           role: 'assistant',
-          content: "Hey creator 👋 — ready to bring your next universe to life? I can help with story ideas, scene generation, voice casting, or analytics insights. What would you like to create today?",
+          content: getWelcomeMessage(),
           timestamp: new Date()
         }]);
       }, 500);
     }
-  }, [isOpen]);
+  }, [isOpen, currentPhase, universeTitle]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -88,30 +190,96 @@ const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate AI response - context-aware based on phase and mode
     setTimeout(() => {
-      const responses: Record<AssistantMode, string[]> = {
-        story: [
-          "Great idea! Let me craft a compelling logline for you...\n\n*'In a city where memories can be stolen, one detective must recover their own past before it's erased forever.'*\n\nWould you like me to develop this into a full synopsis, or explore alternate directions?",
-          "I've analyzed successful story structures in your genre. Here's a three-act breakdown that could work well...",
-          "Based on your universe's theme, I recommend focusing on character-driven conflict. Let me suggest some compelling character arcs..."
-        ],
-        visual: [
-          "I can help generate visual prompts for your scene. Here's what I suggest:\n\n**Opening Shot**: Aerial view descending through neon-lit cityscape, rain-slicked streets reflecting holographic billboards.\n\n**Mood**: Cyberpunk noir, high contrast\n**Color Palette**: Deep blues, cyan highlights, magenta accents\n\nWant me to create more scene variations?",
-          "For this scene, I recommend a cinematic style inspired by Blade Runner meets Ghost in the Shell. Let me generate specific visual prompts for Runway..."
-        ],
-        voice: [
-          "Perfect! For this scene, I recommend:\n\n**Main Character (Ava)**: \n- Voice: Nova by ElevenLabs\n- Tone: Calm, mysterious\n- Emotional range: Contemplative to determined\n\n**Antagonist (Nexus)**:\n- Voice: Echo by ElevenLabs\n- Tone: Deep, commanding\n- Emotional range: Cold to menacing\n\nWant to preview these voices?",
-          "I've analyzed the emotional beats in your script. Here are the optimal voice modulation points..."
-        ],
-        insight: [
-          "Based on your analytics:\n\n📈 **Trending Up**: Your Sci-Fi universes get 2.3× more engagement\n👥 **Audience**: 68% prefer female narrators\n🎯 **Best Upload Time**: Thursday 7-9 PM EST\n💰 **Revenue Opportunity**: Enable Premium Views for 30% boost\n\nWant detailed recommendations?",
-          "Your last universe 'Digital Horizons' is performing exceptionally well! Here's what's working..."
-        ]
+      const contextAwareResponses: Record<CreationPhase, Record<AssistantMode, string[]>> = {
+        concept: {
+          story: [
+            `Great premise for "${universeTitle}"! Here's a compelling logline:\n\n*'In a world where [core conflict], one [protagonist] must [main goal] before [stakes].'*\n\nLet's develop the world-building details next. What's the primary setting or era?`,
+            `I see strong potential here. Let me suggest a comparable narrative structure:\n\n1. **Setup**: Introduce the world and protagonist's ordinary life\n2. **Inciting Incident**: A revelation that changes everything\n3. **Rising Action**: Escalating challenges with high stakes\n\nWhich story beats resonate with your vision?`
+          ],
+          visual: [
+            `For the visual language of "${universeTitle}", I recommend:\n\n**Aesthetic**: Cyberpunk meets Art Deco\n**Color Palette**: Deep purples, neon cyan, gold accents\n**Mood**: Dystopian yet hopeful\n\nShould we explore different visual styles?`
+          ],
+          voice: [
+            `Let's define the audio identity of "${universeTitle}":\n\n**Narration Style**: First-person internal monologue\n**Music Genre**: Synthwave with orchestral elements\n**Tone**: Contemplative, mysterious\n\nHow does this align with your vision?`
+          ],
+          insight: [
+            `Market analysis for your concept:\n\n📊 **Genre Popularity**: Cyberpunk content gets 2.8× engagement\n👥 **Audience Size**: 18-35 year-olds, tech-savvy\n💡 **Opportunity**: Underserved in interactive format\n🎯 **Recommendation**: Emphasize choice mechanics\n\nRdy to refine the targeting?`
+          ]
+        },
+        scriptwriting: {
+          story: [
+            `Let's develop the main character arc for "${universeTitle}":\n\n**Start**: [Initial belief/weakness]\n**Catalyst**: [The event that changes them]\n**Climax**: [Moment of truth]\n**Resolution**: [New belief/strength]\n\nWho is your protagonist at their core?`,
+            `For the three-act structure:\n\n**Act 1**: Establish world & character (20-30%)\n**Act 2**: Rising conflict & complications (40-60%)\n**Act 3**: Climax & resolution (20-30%)\n\nHow many scenes are you planning?`
+          ],
+          voice: [
+            `Perfect for voice casting in "${universeTitle}":\n\nAnalyzing emotional dialogue beats:\n- 40% contemplative/introspective\n- 35% action-driven/urgent\n- 25% emotional/vulnerable\n\nRecommended voice types & ElevenLabs presets await!`
+          ],
+          visual: [
+            `Scene composition suggestions based on your script:\n\n**Dialogue Scenes**: Close-up intimacy with depth of field\n**Action Beats**: Wide shots emphasizing scale\n**Transitions**: Visual motifs connecting scenes\n\nWhich scene should we detail first?`
+          ],
+          insight: [
+            `Story strength analysis for "${universeTitle}":\n\n✅ **Strong**: Character motivation clarity\n⚠️ **Needs Work**: Second act pacing (flat section at 55%)\n💡 **Suggestion**: Add subplot convergence point\n\nWant specific rewrite suggestions?`
+          ]
+        },
+        visual: {
+          story: [
+            `Narrative visual language for "${universeTitle}":\n\n**Opening**: Wide establishing shot, crane down\n**Key Moments**: Extreme close-ups for emotion\n**Transitions**: Thematic visual motifs\n\nShall we storyboard the key scenes?`
+          ],
+          visual: [
+            `Detailed visual generation for "${universeTitle}" scenes:\n\n**Scene 1 - Setting**: \nA sprawling neon cityscape at dusk, rain-slicked streets reflecting holographic advertisements, flying vehicles creating light trails\n\n**Color Reference**: Blade Runner 2049 meets Cyberpunk aesthetics\n**Key Lighting**: Cold rim lights, warm practical lights\n\nReady to generate prompts for Runway/Midjourney?`,
+            `Let's refine the visual palette for "${universeTitle}":\n\n**Primary**: #00eaff (Neon cyan)\n**Secondary**: #a24df6 (Violet)\n**Tertiary**: Deep blacks and rich purples\n\nHow does this hierarchy feel?`
+          ],
+          voice: [
+            `Visual timing for voice-over in "${universeTitle}":\n\n**Narration Pacing**: Slower during contemplative visuals\n**Dialogue Sync**: Match emotional peaks with visual crescendos\n**Silence**: Strategic pauses emphasize impact\n\nWant timing suggestions?`
+          ],
+          insight: [
+            `Visual market research for "${universeTitle}":\n\n📈 **Trending Visual Styles**: Cyberpunk (↑45%), Minimalist (↑32%)\n🎬 **Cinematography**: Dynamic motion performs 3.2x better\n🎨 **Color Theory**: Neon + pastels gets 2.8x engagement\n\nOptimizing your visuals accordingly...`
+          ]
+        },
+        audio: {
+          story: [
+            `Character voice requirements for "${universeTitle}":\n\nAnalyzing dialogue intensity and emotional range to match voice characteristics...`
+          ],
+          visual: [],
+          voice: [
+            `Perfect voice casting for "${universeTitle}":\n\n**Protagonist (Lead)**:\n- Voice: Nova AI (ElevenLabs) - warm, authoritative\n- Range: E3-E5, conversational pace\n- Accent: American neutral with slight regional flavor\n\n**Ready to preview?**`,
+            `Music theme development for "${universeTitle}":\n\n**Act 1 Theme**: 120 BPM, minor key, mysterious\n**Action Theme**: 140 BPM, driving rhythm, epic\n**Resolution Theme**: Slower, major key, hopeful\n\nLet's license AI music generation via Stable Audio...`
+          ],
+          insight: [
+            `Audio performance analytics for "${universeTitle}":\n\n🎧 **Voice Engagement**: Female narrators +2.3x retention\n🎵 **Music Impact**: Thematic scoring +1.8x emotional response\n📊 **Timing**: Intro music 30-60 seconds optimal\n\nOptimizing audio strategy...`
+          ]
+        },
+        review: {
+          story: [
+            `Pacing analysis for "${universeTitle}":\n\n✅ Act 1: Great hook (3 min) \n⚠️ Act 2: Slight drag at 12:30 mark\n✅ Act 3: Strong climax\n\n💡 Suggestion: Tighten middle section by 45 seconds`
+          ],
+          visual: [
+            `Visual consistency check for "${universeTitle}":\n\n✅ Color grading: Consistent throughout\n✅ Camera language: Clear scene hierarchy\n⚠️ Lighting continuity: Minor issue at transition 5\n\nAll fixable with color pass!`
+          ],
+          voice: [],
+          insight: [
+            `Holistic review of "${universeTitle}":\n\n📊 **Overall Quality**: 8.7/10\n✅ **Strengths**: Compelling story, cohesive visuals\n⚠️ **Improvements**: Tighten pacing, enhance emotional beats\n🎯 **Predicted Performance**: Top 5% in genre\n\nReady to publish?`
+          ]
+        },
+        publishing: {
+          story: [
+            `Compelling description for "${universeTitle}":\n\nHook: "In a world where [stakes], one [hero] must [quest]."\n\nExpanded: [2-3 sentences of intrigue]\n\nCall to action: "Enter the universe. Experience the story."\n\nGood angle?`
+          ],
+          visual: [],
+          voice: [],
+          insight: [
+            `Monetization strategy for "${universeTitle}":\n\n💰 **Recommended Model**: Premium + Ad Revenue\n🎯 **Price Point**: $4.99 for 48-hour access\n📈 **Projected Revenue**: $500-2K first month\n📅 **Launch Timing**: Friday 7 PM EST for weekend reach\n\nReady to configure settings?`
+          ]
+        }
       };
 
-      const modeResponses = responses[mode];
-      const response = modeResponses[Math.floor(Math.random() * modeResponses.length)];
+      const phaseResponses = contextAwareResponses[currentPhase];
+      const modeResponses = phaseResponses[mode] || phaseResponses.story;
+      const response = modeResponses.length > 0
+        ? modeResponses[Math.floor(Math.random() * modeResponses.length)]
+        : `I'm ready to help with "${universeTitle}" in this phase. What would you like to focus on?`;
 
       setIsTyping(false);
       setMessages(prev => [...prev, {
@@ -160,13 +328,18 @@ const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
       <div className="relative h-full flex flex-col border-l-2 border-[#00eaff]/30">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,234,255,0.3)] animate-pulse">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,234,255,0.3)] animate-pulse flex-shrink-0">
               <Sparkles className="w-5 h-5 text-[#00eaff]" />
             </div>
-            <div>
-              <h2 className="font-display text-lg font-bold text-white">CineVerse AI Assistant</h2>
-              <p className="text-xs text-white/60">Your Creative Copilot</p>
+            <div className="min-w-0">
+              <h2 className="font-display text-lg font-bold text-white truncate">CineVerse AI</h2>
+              <div className="flex items-center gap-2 text-xs text-white/60">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-[#a24df6]/20 text-[#a24df6] capitalize truncate">
+                  {currentPhase}
+                </span>
+                <span className="truncate">{universeTitle}</span>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -207,8 +380,44 @@ const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {messages.length === 1 && (
-            <div className="mb-6">
-              <p className="text-sm text-white/60 mb-4">Quick Actions:</p>
+            <div className="mb-6 space-y-4">
+              {/* Phase Guidance Tips */}
+              <div className="p-4 rounded-xl bg-[#a24df6]/10 border border-[#a24df6]/20">
+                <p className="text-sm font-semibold text-[#a24df6] mb-3 capitalize">
+                  💡 {currentPhase} Phase Tips
+                </p>
+                <ul className="space-y-1">
+                  {phaseGuidance[currentPhase].tips.map((tip, idx) => (
+                    <li key={idx} className="text-xs text-white/70 flex gap-2">
+                      <span className="text-[#00eaff]">•</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Recommended Modes */}
+              <div>
+                <p className="text-sm text-white/60 mb-2">Recommended Modes for this phase:</p>
+                <div className="flex flex-wrap gap-2">
+                  {phaseGuidance[currentPhase].recommendedModes.map((recommendedMode) => {
+                    const m = modes.find(mod => mod.id === recommendedMode);
+                    const Icon = m?.icon || Sparkles;
+                    return (
+                      <button
+                        key={recommendedMode}
+                        onClick={() => setMode(recommendedMode)}
+                        className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#00eaff]/10 border border-[#00eaff]/30 text-[#00eaff] text-xs hover:bg-[#00eaff]/20 transition-all"
+                      >
+                        <Icon className="w-3 h-3" />
+                        <span>{m?.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <p className="text-sm text-white/60 mt-4">Quick Actions:</p>
               <div className="flex flex-wrap gap-2">
                 {suggestedPrompts.map((prompt, idx) => (
                   <button

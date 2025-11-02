@@ -30,10 +30,10 @@ const StoryPreview = () => {
   const { id } = useParams();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0b1a] to-[#10182e]">
       {/* Hero Section with Trailer */}
       <section className="relative h-screen">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0b1a]/50 to-[#10182e] z-10" />
         <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center" />
         
         <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center">

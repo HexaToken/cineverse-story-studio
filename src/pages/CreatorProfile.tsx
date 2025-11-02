@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Play, Share2, Heart, Star, Eye, MessageCircle, Sparkles, Trophy, Users, Youtube, Twitter, Globe, Send, TrendingUp, BarChart3, Clock, Repeat2 } from "lucide-react";
+import { Play, Share2, Heart, Star, Eye, MessageCircle, Sparkles, Trophy, Users, Youtube, Twitter, Globe, Send, TrendingUp, BarChart3, Clock, Repeat2, Clapperboard } from "lucide-react";
 
 const CreatorProfile = () => {
   const { id } = useParams();
@@ -166,19 +166,25 @@ const CreatorProfile = () => {
 
             <div className="flex items-center justify-center gap-4">
               <a
-                href="#"
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#00eaff]/30 flex items-center justify-center hover:bg-[#00eaff]/20 hover:border-[#00eaff] transition-all group"
               >
                 <Twitter className="w-5 h-5 text-white/60 group-hover:text-[#00eaff]" />
               </a>
               <a
-                href="#"
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#a24df6]/30 flex items-center justify-center hover:bg-[#a24df6]/20 hover:border-[#a24df6] transition-all group"
               >
                 <Youtube className="w-5 h-5 text-white/60 group-hover:text-[#a24df6]" />
               </a>
               <a
-                href="#"
+                href="https://cineverse.app"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-sm border border-[#00eaff]/30 flex items-center justify-center hover:bg-[#00eaff]/20 hover:border-[#00eaff] transition-all group"
               >
                 <Globe className="w-5 h-5 text-white/60 group-hover:text-[#00eaff]" />
@@ -190,6 +196,12 @@ const CreatorProfile = () => {
                 <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white shadow-[0_0_30px_rgba(0,234,255,0.5)] hover:shadow-[0_0_40px_rgba(0,234,255,0.7)] h-12 px-8 text-base">
                   <BarChart3 className="w-5 h-5 mr-2" />
                   Open Studio Dashboard
+                </Button>
+              </Link>
+              <Link to="/feed">
+                <Button variant="outline" className="border-[#a24df6]/40 text-[#a24df6] h-12 px-8 text-base hover:bg-[#a24df6]/10">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  View Creator Feed
                 </Button>
               </Link>
               <Button
@@ -298,10 +310,13 @@ const CreatorProfile = () => {
                       </CardContent>
                     </Card>
                   </div>
-                  <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff]">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Generate AI Resume
-                  </Button>
+                  <button
+                    onClick={() => setActiveTab("universes")}
+                    className="w-full px-4 py-2 rounded-lg border border-[#00eaff]/40 text-[#00eaff] hover:bg-[#00eaff]/10 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    View All Universes
+                  </button>
                 </div>
               </div>
 
@@ -332,37 +347,44 @@ const CreatorProfile = () => {
           {/* Universes Tab */}
           {activeTab === "universes" && (
             <div className="space-y-6">
-              <h2 className="font-display text-4xl font-bold text-white">Signature Universes</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white">Signature Universes</h2>
+                <Link to="/studio">
+                  <Button className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Create New Universe
+                  </Button>
+                </Link>
+              </div>
               <div className="grid md:grid-cols-3 gap-6">
                 {featuredWorks.map((work) => (
-                  <Card
-                    key={work.id}
-                    className="group bg-white/5 backdrop-blur-sm border border-[#00eaff]/20 overflow-hidden cursor-pointer hover:border-[#a24df6]/50 transition-all hover:shadow-[0_0_30px_rgba(162,77,246,0.3)]"
-                  >
-                    <div className="relative aspect-[2/3] bg-gradient-to-br from-[#1a1a2e] to-[#0a0b1a] overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00eaff]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <Play className="w-16 h-16 text-white/40 mb-4 group-hover:text-[#00eaff] group-hover:scale-110 transition-all" />
-                        <h3 className="font-display text-2xl font-bold text-white mb-2">{work.title}</h3>
-                        <Badge className="bg-[#a24df6]/20 text-[#a24df6] border border-[#a24df6]/40 mb-3">
-                          {work.genre}
-                        </Badge>
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <p className="text-white/90 text-sm italic mb-3">{work.tagline}</p>
-                        <div className="flex items-center justify-between text-xs text-white/60">
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 text-[#00eaff] fill-[#00eaff]" />
-                            <span>{work.rating}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Eye className="w-4 h-4" />
-                            <span>{work.views}</span>
+                  <Link key={work.id} to={`/universe/${work.id}`}>
+                    <Card className="group bg-white/5 backdrop-blur-sm border border-[#00eaff]/20 overflow-hidden cursor-pointer hover:border-[#a24df6]/50 transition-all hover:shadow-[0_0_30px_rgba(162,77,246,0.3)] h-full">
+                      <div className="relative aspect-[2/3] bg-gradient-to-br from-[#1a1a2e] to-[#0a0b1a] overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00eaff]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                          <Play className="w-16 h-16 text-white/40 mb-4 group-hover:text-[#00eaff] group-hover:scale-110 transition-all" />
+                          <h3 className="font-display text-2xl font-bold text-white mb-2">{work.title}</h3>
+                          <Badge className="bg-[#a24df6]/20 text-[#a24df6] border border-[#a24df6]/40 mb-3">
+                            {work.genre}
+                          </Badge>
+                        </div>
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                          <p className="text-white/90 text-sm italic mb-3">{work.tagline}</p>
+                          <div className="flex items-center justify-between text-xs text-white/60">
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 text-[#00eaff] fill-[#00eaff]" />
+                              <span>{work.rating}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Eye className="w-4 h-4" />
+                              <span>{work.views}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -371,7 +393,15 @@ const CreatorProfile = () => {
           {/* Timeline Tab */}
           {activeTab === "timeline" && (
             <div className="space-y-6">
-              <h2 className="font-display text-4xl font-bold text-white mb-6">Creator Timeline</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white mb-6">Creator Timeline</h2>
+                <Link to="/feed">
+                  <Button variant="outline" className="border-[#00eaff]/40 text-[#00eaff]">
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Community Feed
+                  </Button>
+                </Link>
+              </div>
               <div className="space-y-6">
                 {timelinePosts.map((post) => (
                   <Card
@@ -422,10 +452,12 @@ const CreatorProfile = () => {
                           <MessageCircle className="w-5 h-5 mr-2" />
                           Comment
                         </Button>
-                        <Button variant="ghost" className="text-white/70 hover:text-[#a24df6]">
-                          <Repeat2 className="w-5 h-5 mr-2" />
-                          Remix
-                        </Button>
+                        <Link to="/studio">
+                          <Button variant="ghost" className="text-white/70 hover:text-[#a24df6]">
+                            <Repeat2 className="w-5 h-5 mr-2" />
+                            Remix
+                          </Button>
+                        </Link>
                         <Button variant="ghost" className="text-white/70 hover:text-white">
                           <Share2 className="w-5 h-5 mr-2" />
                           Share
@@ -441,20 +473,27 @@ const CreatorProfile = () => {
           {/* Behind the Scenes Tab */}
           {activeTab === "behind" && (
             <div className="space-y-8">
-              <h2 className="font-display text-4xl font-bold text-white">Inside the Studio</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white">Inside the Studio</h2>
+                <Link to="/studio">
+                  <Button className="bg-gradient-to-r from-[#a24df6] to-[#00eaff] text-white">
+                    <Clapperboard className="w-4 h-4 mr-2" />
+                    Open Studio
+                  </Button>
+                </Link>
+              </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-lg bg-gradient-to-br from-[#00eaff]/10 to-[#a24df6]/10 border border-white/10 cursor-pointer hover:border-[#00eaff]/40 transition-all group relative overflow-hidden"
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Eye className="w-10 h-10 text-white/50 group-hover:text-white/80 transition-all" />
+                  <Link key={i} to="/studio">
+                    <div className="aspect-square rounded-lg bg-gradient-to-br from-[#00eaff]/10 to-[#a24df6]/10 border border-white/10 cursor-pointer hover:border-[#00eaff]/40 transition-all group relative overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Eye className="w-10 h-10 text-white/50 group-hover:text-white/80 transition-all" />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform">
+                        <p className="text-white/90 text-sm">Prompt Test #{i}: Cyber Dreamscape</p>
+                      </div>
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform">
-                      <p className="text-white/90 text-sm">Prompt Test #{i}: Cyber Dreamscape</p>
-                    </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
@@ -464,21 +503,23 @@ const CreatorProfile = () => {
                 <h3 className="font-display text-2xl font-bold text-white">Collaborators & Credits</h3>
                 <div className="grid md:grid-cols-3 gap-4">
                   {collaborators.map((collab, i) => (
-                    <Card key={i} className="bg-white/5 backdrop-blur-xl border-white/10">
-                      <CardContent className="p-4 text-center space-y-3">
-                        <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center">
-                          <span className="text-2xl text-white font-bold">{collab.name[0]}</span>
-                        </div>
-                        <div>
-                          <p className="text-white font-semibold">{collab.name}</p>
-                          <p className="text-white/60 text-sm">{collab.role}</p>
-                          <p className="text-white/50 text-xs mt-1">{collab.universes} universes together</p>
-                        </div>
-                        <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff] text-sm">
-                          View Profile
-                        </Button>
-                      </CardContent>
-                    </Card>
+                    <Link key={i} to={`/creator/${collab.name.toLowerCase()}`}>
+                      <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:border-[#00eaff]/40 transition-all h-full cursor-pointer">
+                        <CardContent className="p-4 text-center space-y-3">
+                          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center">
+                            <span className="text-2xl text-white font-bold">{collab.name[0]}</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">{collab.name}</p>
+                            <p className="text-white/60 text-sm">{collab.role}</p>
+                            <p className="text-white/50 text-xs mt-1">{collab.universes} universes together</p>
+                          </div>
+                          <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff] text-sm">
+                            View Profile
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -547,17 +588,40 @@ const CreatorProfile = () => {
                 asChild
                 className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white text-lg px-8 py-6"
               >
-                <Link to="/dashboard">
+                <Link to={`/hub/${id || "default"}`}>
                   <BarChart3 className="w-5 h-5 mr-2" />
-                  Open Creator Dashboard
+                  View Analytics Hub
                 </Link>
               </Button>
               <Button
+                asChild
+                variant="outline"
+                className="border-[#a24df6]/40 text-[#a24df6] text-lg px-8 py-6"
+              >
+                <Link to="/dashboard">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Open Studio Dashboard
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="border-[#a24df6]/40 text-[#a24df6] text-lg px-8 py-6"
+              >
+                <Link to="/explore">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  View on Explore Map
+                </Link>
+              </Button>
+              <Button
+                asChild
                 variant="outline"
                 className="border-white/40 text-white text-lg px-8 py-6"
               >
-                <Sparkles className="w-5 h-5 mr-2" />
-                Ask Studio AI
+                <Link to="/discover">
+                  <Eye className="w-5 h-5 mr-2" />
+                  Explore More Creators
+                </Link>
               </Button>
             </div>
           </div>
