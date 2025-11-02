@@ -380,8 +380,44 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {messages.length === 1 && (
-            <div className="mb-6">
-              <p className="text-sm text-white/60 mb-4">Quick Actions:</p>
+            <div className="mb-6 space-y-4">
+              {/* Phase Guidance Tips */}
+              <div className="p-4 rounded-xl bg-[#a24df6]/10 border border-[#a24df6]/20">
+                <p className="text-sm font-semibold text-[#a24df6] mb-3 capitalize">
+                  💡 {currentPhase} Phase Tips
+                </p>
+                <ul className="space-y-1">
+                  {phaseGuidance[currentPhase].tips.map((tip, idx) => (
+                    <li key={idx} className="text-xs text-white/70 flex gap-2">
+                      <span className="text-[#00eaff]">•</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Recommended Modes */}
+              <div>
+                <p className="text-sm text-white/60 mb-2">Recommended Modes for this phase:</p>
+                <div className="flex flex-wrap gap-2">
+                  {phaseGuidance[currentPhase].recommendedModes.map((recommendedMode) => {
+                    const m = modes.find(mod => mod.id === recommendedMode);
+                    const Icon = m?.icon || Sparkles;
+                    return (
+                      <button
+                        key={recommendedMode}
+                        onClick={() => setMode(recommendedMode)}
+                        className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#00eaff]/10 border border-[#00eaff]/30 text-[#00eaff] text-xs hover:bg-[#00eaff]/20 transition-all"
+                      >
+                        <Icon className="w-3 h-3" />
+                        <span>{m?.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <p className="text-sm text-white/60 mt-4">Quick Actions:</p>
               <div className="flex flex-wrap gap-2">
                 {suggestedPrompts.map((prompt, idx) => (
                   <button
