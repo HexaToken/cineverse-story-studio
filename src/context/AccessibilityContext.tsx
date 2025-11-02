@@ -18,8 +18,13 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [highContrast, setHighContrast] = useState(() => {
-    const saved = localStorage.getItem('cineverse_accessibility_high_contrast');
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem('cineverse_accessibility_high_contrast');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_high_contrast');
+      return false;
+    }
   });
 
   const [reduceMotion, setReduceMotion] = useState(() => {
