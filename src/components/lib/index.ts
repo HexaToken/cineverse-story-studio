@@ -13,10 +13,19 @@ export type { CosmoHeadingProps } from './CosmoHeading';
 export { CosmoBadge } from './CosmoBadge';
 export type { CosmoBadgeProps } from './CosmoBadge';
 
+export { CosmoText } from './CosmoText';
+export type { CosmoTextProps } from './CosmoText';
+
+export { CosmoIconButton } from './CosmoIconButton';
+export type { CosmoIconButtonProps } from './CosmoIconButton';
+
 export { SectionHeader } from './SectionHeader';
 
 export { CosmoGrid } from './CosmoGrid';
 export type { CosmoGridProps } from './CosmoGrid';
+
+export { CosmoContainer } from './CosmoContainer';
+export type { CosmoContainerProps } from './CosmoContainer';
 
 // Specialized Components
 export { UniverseCard } from './UniverseCard';
