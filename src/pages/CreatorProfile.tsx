@@ -471,21 +471,23 @@ const CreatorProfile = () => {
                 <h3 className="font-display text-2xl font-bold text-white">Collaborators & Credits</h3>
                 <div className="grid md:grid-cols-3 gap-4">
                   {collaborators.map((collab, i) => (
-                    <Card key={i} className="bg-white/5 backdrop-blur-xl border-white/10">
-                      <CardContent className="p-4 text-center space-y-3">
-                        <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center">
-                          <span className="text-2xl text-white font-bold">{collab.name[0]}</span>
-                        </div>
-                        <div>
-                          <p className="text-white font-semibold">{collab.name}</p>
-                          <p className="text-white/60 text-sm">{collab.role}</p>
-                          <p className="text-white/50 text-xs mt-1">{collab.universes} universes together</p>
-                        </div>
-                        <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff] text-sm">
-                          View Profile
-                        </Button>
-                      </CardContent>
-                    </Card>
+                    <Link key={i} to={`/creator/${collab.name.toLowerCase()}`}>
+                      <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:border-[#00eaff]/40 transition-all h-full cursor-pointer">
+                        <CardContent className="p-4 text-center space-y-3">
+                          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center">
+                            <span className="text-2xl text-white font-bold">{collab.name[0]}</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">{collab.name}</p>
+                            <p className="text-white/60 text-sm">{collab.role}</p>
+                            <p className="text-white/50 text-xs mt-1">{collab.universes} universes together</p>
+                          </div>
+                          <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff] text-sm">
+                            View Profile
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
               </div>
