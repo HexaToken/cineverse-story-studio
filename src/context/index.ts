@@ -22,5 +22,9 @@ export type { RemixVersion, RemixContextType } from './RemixContext';
 export { CollaborationProvider, useCollaboration } from './CollaborationContext';
 export type { Collaborator, CollaborationProject, Comment, CollaborationContextType, PermissionLevel } from './CollaborationContext';
 
+// Search Context
+export { SearchProvider, useSearch } from './SearchContext';
+export type { SearchResult, SearchFilters, SearchContextType } from './SearchContext';
+
 // App Provider
 export { AppProvider } from './AppProvider';

@@ -5,6 +5,7 @@ import { AnalyticsProvider } from './AnalyticsContext';
 import { FavoritesProvider } from './FavoritesContext';
 import { RemixProvider } from './RemixContext';
 import { CollaborationProvider } from './CollaborationContext';
+import { SearchProvider } from './SearchContext';
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -16,18 +17,20 @@ interface AppProviderProps {
  */
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <AuthProvider>
-      <UniverseProvider>
-        <AnalyticsProvider>
-          <FavoritesProvider>
-            <RemixProvider>
-              <CollaborationProvider>
-                {children}
-              </CollaborationProvider>
-            </RemixProvider>
-          </FavoritesProvider>
-        </AnalyticsProvider>
-      </UniverseProvider>
-    </AuthProvider>
+    <SearchProvider>
+      <AuthProvider>
+        <UniverseProvider>
+          <AnalyticsProvider>
+            <FavoritesProvider>
+              <RemixProvider>
+                <CollaborationProvider>
+                  {children}
+                </CollaborationProvider>
+              </RemixProvider>
+            </FavoritesProvider>
+          </AnalyticsProvider>
+        </UniverseProvider>
+      </AuthProvider>
+    </SearchProvider>
   );
 };
