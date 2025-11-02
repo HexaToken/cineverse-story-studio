@@ -15,6 +15,8 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 const Dashboard = () => {
   const [builderOpen, setBuilderOpen] = useState(false);
   const [aiAssistantOpen, setAiAssistantOpen] = useState(false);
+  const [currentPhase, setCurrentPhase] = useState<"concept" | "scriptwriting" | "visual" | "audio" | "review" | "publishing">("concept");
+  const [universeTitle, setUniverseTitle] = useState("My Universe");
 
   return (
     <SidebarProvider>
