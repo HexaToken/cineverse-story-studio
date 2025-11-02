@@ -203,115 +203,105 @@ const Discover = () => {
         {/* Genre Rows */}
         {genres.map((genre) => (
           <section key={genre.name}>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{genre.icon}</span>
-                <h2 className="font-display text-3xl font-bold text-white">{genre.name}</h2>
-                <Badge className="bg-white/5 text-white/70">{genre.count}</Badge>
+                <CosmoHeading size="lg" level="h2">{genre.name}</CosmoHeading>
+                <CosmoBadge variant="default">{genre.count}</CosmoBadge>
               </div>
-              <Button variant="ghost" className="text-[#00eaff]">
+              <CosmoButton cosmicVariant="ghost" size="sm">
                 View All →
-              </Button>
+              </CosmoButton>
             </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <CosmoGrid columns={4} gap="md">
               {[1, 2, 3, 4, 5].map((i) => (
-                <Card
-                  key={i}
-                  className="bg-white/5 backdrop-blur-xl border-white/10 hover:border-[#00eaff]/40 transition-all group cursor-pointer"
-                >
+                <CosmoCard key={i} variant="subtle" className="group">
                   <div className="aspect-video bg-gradient-to-br from-[#00eaff]/10 to-[#a24df6]/10 flex items-center justify-center relative">
                     <Play className="w-10 h-10 text-white/40 group-hover:text-white/80 transition-all group-hover:scale-110" />
                   </div>
-                  <div className="p-3">
+                  <CosmoCardBody className="space-y-1">
                     <p className="text-white font-semibold text-sm">Universe {i}</p>
                     <p className="text-white/50 text-xs">by Creator</p>
-                  </div>
-                </Card>
+                  </CosmoCardBody>
+                </CosmoCard>
               ))}
-            </div>
+            </CosmoGrid>
           </section>
         ))}
 
         {/* Live & Interactive */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <Radio className="w-6 h-6 text-red-500 animate-pulse" />
-            <h2 className="font-display text-3xl font-bold text-white">Now Live in the CineVerse</h2>
+            <CosmoHeading size="lg" level="h2">Now Live in the CineVerse</CosmoHeading>
           </div>
-          <div className="grid md:grid-cols-3 gap-4">
+          <CosmoGrid columns={3}>
             {liveEvents.map((event) => (
-              <Card
+              <CosmoCard
                 key={event.id}
-                className="bg-white/5 backdrop-blur-xl border-red-500/30 hover:border-red-500/50 transition-all cursor-pointer"
+                variant="default"
+                className="border-red-500/30 hover:border-red-500/50"
               >
-                <div className="p-6 space-y-4">
+                <CosmoCardBody className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <Badge className="bg-red-500 text-white border-0 animate-pulse">
+                    <CosmoBadge variant="error" size="sm">
                       {event.status}
-                    </Badge>
+                    </CosmoBadge>
                     <div className="flex items-center gap-2 text-white/70">
                       <Users className="w-4 h-4" />
                       <span className="text-sm">{event.viewers.toLocaleString()}</span>
                     </div>
                   </div>
                   <h3 className="font-display text-xl font-bold text-white">{event.title}</h3>
-                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
+                  <CosmoButton cosmicVariant="accent" className="w-full">
                     {event.status === "LIVE" ? "Join Now" : "Set Reminder"}
-                  </Button>
-                </div>
-              </Card>
+                  </CosmoButton>
+                </CosmoCardBody>
+              </CosmoCard>
             ))}
-          </div>
+          </CosmoGrid>
         </section>
 
         {/* Creator Spotlights */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <Sparkles className="w-6 h-6 text-[#a24df6]" />
-            <h2 className="font-display text-3xl font-bold text-white">Visionaries of the CineVerse</h2>
+            <CosmoHeading size="lg" level="h2">Visionaries of the CineVerse</CosmoHeading>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {creators.map((creator) => (
-              <Card
+          <CosmoGrid columns={4}>
+            {creators.map((creator, idx) => (
+              <CreatorCard
                 key={creator.name}
-                className="bg-white/5 backdrop-blur-xl border-[#a24df6]/20 hover:border-[#a24df6]/40 transition-all group cursor-pointer text-center"
-              >
-                <div className="p-6 space-y-4">
-                  <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center shadow-[0_0_30px_rgba(162,77,246,0.4)] group-hover:shadow-[0_0_50px_rgba(162,77,246,0.6)] transition-all">
-                    <span className="text-3xl text-white font-bold">{creator.name[0]}</span>
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl font-bold text-white">@{creator.name}</h3>
-                    <p className="text-white/60 text-sm mt-1">{creator.universes} Universes Created</p>
-                    <p className="text-[#a24df6] text-sm mt-2">{creator.specialty}</p>
-                  </div>
-                  <Button variant="outline" className="w-full border-[#a24df6]/40 text-[#a24df6]">
-                    View Profile
-                  </Button>
-                </div>
-              </Card>
+                id={idx}
+                name={creator.name}
+                universes={creator.universes}
+                specialty={creator.specialty}
+                followers={Math.floor(Math.random() * 100000)}
+                href={`/creator/${creator.name}`}
+              />
             ))}
-          </div>
+          </CosmoGrid>
         </section>
 
         {/* Community Picks */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <Star className="w-6 h-6 text-yellow-500" />
-            <h2 className="font-display text-3xl font-bold text-white">Fan-Favorite Universes</h2>
+            <CosmoHeading size="lg" level="h2">Fan-Favorite Universes</CosmoHeading>
           </div>
-          <div className="grid md:grid-cols-3 gap-4">
+          <CosmoGrid columns={3}>
             {communityPicks.map((pick, i) => (
-              <Card
+              <CosmoCard
                 key={i}
-                className="bg-white/5 backdrop-blur-xl border-yellow-500/20 hover:border-yellow-500/40 transition-all cursor-pointer"
+                variant="default"
+                className="border-yellow-500/20 hover:border-yellow-500/40 flex flex-col"
               >
                 <div className="aspect-video bg-gradient-to-br from-yellow-500/10 to-[#a24df6]/10 flex items-center justify-center">
                   <Play className="w-12 h-12 text-white/50" />
                 </div>
-                <div className="p-4 space-y-3">
+                <CosmoCardBody className="flex-1 space-y-3">
                   <h3 className="font-display text-lg font-bold text-white">{pick.title}</h3>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -323,10 +313,10 @@ const Discover = () => {
                   <blockquote className="text-white/60 text-sm italic border-l-2 border-yellow-500/40 pl-3">
                     "{pick.quote}"
                   </blockquote>
-                </div>
-              </Card>
+                </CosmoCardBody>
+              </CosmoCard>
             ))}
-          </div>
+          </CosmoGrid>
         </section>
 
         {/* CineVerse Originals */}
