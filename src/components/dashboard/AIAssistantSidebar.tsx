@@ -25,9 +25,13 @@ interface Message {
 
 type AssistantMode = 'story' | 'visual' | 'voice' | 'insight';
 
+type CreationPhase = 'concept' | 'scriptwriting' | 'visual' | 'audio' | 'review' | 'publishing';
+
 interface AIAssistantSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  currentPhase?: CreationPhase;
+  universeTitle?: string;
 }
 
 const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
