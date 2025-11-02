@@ -38,6 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserState(JSON.parse(savedUser));
       } catch (error) {
         console.error('Failed to load user from storage:', error);
+        localStorage.removeItem('cineverse_user');
       }
     }
     setIsLoading(false);

@@ -18,32 +18,57 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [highContrast, setHighContrast] = useState(() => {
-    const saved = localStorage.getItem('cineverse_accessibility_high_contrast');
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem('cineverse_accessibility_high_contrast');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_high_contrast');
+      return false;
+    }
   });
 
   const [reduceMotion, setReduceMotion] = useState(() => {
-    // Check system preference
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return true;
+    try {
+      // Check system preference
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return true;
+      }
+      const saved = localStorage.getItem('cineverse_accessibility_reduce_motion');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_reduce_motion');
+      return false;
     }
-    const saved = localStorage.getItem('cineverse_accessibility_reduce_motion');
-    return saved ? JSON.parse(saved) : false;
   });
 
   const [largeText, setLargeText] = useState(() => {
-    const saved = localStorage.getItem('cineverse_accessibility_large_text');
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem('cineverse_accessibility_large_text');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_large_text');
+      return false;
+    }
   });
 
   const [keyboardNavigation, setKeyboardNavigation] = useState(() => {
-    const saved = localStorage.getItem('cineverse_accessibility_keyboard_navigation');
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem('cineverse_accessibility_keyboard_navigation');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_keyboard_navigation');
+      return false;
+    }
   });
 
   const [screenReaderMode, setScreenReaderMode] = useState(() => {
-    const saved = localStorage.getItem('cineverse_accessibility_screen_reader');
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem('cineverse_accessibility_screen_reader');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      localStorage.removeItem('cineverse_accessibility_screen_reader');
+      return false;
+    }
   });
 
   // Apply accessibility settings to document
