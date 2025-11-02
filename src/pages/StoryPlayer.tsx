@@ -98,7 +98,7 @@ const StoryPlayer = () => {
       </div>
 
       {/* Top Bar */}
-      <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-background/80 to-transparent backdrop-blur-sm">
+      <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-[#0a0b1a]/80 to-transparent backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="space-y-1">
             <h1 className="font-display text-2xl font-bold">The Last Signal</h1>
