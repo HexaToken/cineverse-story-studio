@@ -198,6 +198,12 @@ const CreatorProfile = () => {
                   Open Studio Dashboard
                 </Button>
               </Link>
+              <Link to="/feed">
+                <Button variant="outline" className="border-[#a24df6]/40 text-[#a24df6] h-12 px-8 text-base hover:bg-[#a24df6]/10">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  View Creator Feed
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 className={`border-2 h-12 px-8 text-base transition-all ${
