@@ -393,7 +393,15 @@ const CreatorProfile = () => {
           {/* Timeline Tab */}
           {activeTab === "timeline" && (
             <div className="space-y-6">
-              <h2 className="font-display text-4xl font-bold text-white mb-6">Creator Timeline</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white mb-6">Creator Timeline</h2>
+                <Link to="/feed">
+                  <Button variant="outline" className="border-[#00eaff]/40 text-[#00eaff]">
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Community Feed
+                  </Button>
+                </Link>
+              </div>
               <div className="space-y-6">
                 {timelinePosts.map((post) => (
                   <Card
