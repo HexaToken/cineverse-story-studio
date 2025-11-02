@@ -34,13 +34,65 @@ interface AIAssistantSidebarProps {
   universeTitle?: string;
 }
 
-const AIAssistantSidebar = ({ isOpen, onClose }: AIAssistantSidebarProps) => {
+const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', universeTitle = "Untitled Universe" }: AIAssistantSidebarProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [mode, setMode] = useState<AssistantMode>('story');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Phase-specific tips and guidance
+  const phaseGuidance: Record<CreationPhase, { tips: string[]; recommendedModes: AssistantMode[] }> = {
+    concept: {
+      tips: [
+        "Start with a core concept or logline",
+        "Define your universe's core rules and setting",
+        "Consider your target audience and genre"
+      ],
+      recommendedModes: ['story', 'insight']
+    },
+    scriptwriting: {
+      tips: [
+        "Develop your main character arc",
+        "Structure your three-act narrative",
+        "Write compelling dialogue exchanges"
+      ],
+      recommendedModes: ['story', 'voice']
+    },
+    visual: {
+      tips: [
+        "Define the visual style and color palette",
+        "Create detailed scene composition prompts",
+        "Specify lighting, mood, and atmosphere"
+      ],
+      recommendedModes: ['visual', 'story']
+    },
+    audio: {
+      tips: [
+        "Cast voice actors for each character",
+        "Select music themes and emotional beats",
+        "Plan sound effects and ambience"
+      ],
+      recommendedModes: ['voice', 'insight']
+    },
+    review: {
+      tips: [
+        "Review pacing and narrative flow",
+        "Check consistency in visuals and audio",
+        "Gather feedback from test audience"
+      ],
+      recommendedModes: ['insight', 'story']
+    },
+    publishing: {
+      tips: [
+        "Create compelling metadata and tags",
+        "Plan promotional strategy",
+        "Set monetization and privacy settings"
+      ],
+      recommendedModes: ['insight', 'story']
+    }
+  };
 
   const modes = [
     { id: 'story' as AssistantMode, label: 'Story', icon: Film, color: '#00eaff' },
