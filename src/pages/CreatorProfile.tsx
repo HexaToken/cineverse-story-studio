@@ -310,10 +310,13 @@ const CreatorProfile = () => {
                       </CardContent>
                     </Card>
                   </div>
-                  <Button variant="outline" className="w-full border-[#00eaff]/40 text-[#00eaff]">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Generate AI Resume
-                  </Button>
+                  <button
+                    onClick={() => setActiveTab("universes")}
+                    className="w-full px-4 py-2 rounded-lg border border-[#00eaff]/40 text-[#00eaff] hover:bg-[#00eaff]/10 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    View All Universes
+                  </button>
                 </div>
               </div>
 
