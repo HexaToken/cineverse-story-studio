@@ -313,30 +313,36 @@ const WorkflowView = ({ onPhaseChange }: { onPhaseChange?: (phase: string) => vo
 
       <div className="space-y-3">
         {stages.map((stage) => (
-          <Card key={stage.id} className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20 overflow-hidden">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-white/5 border border-[#00eaff]/20 flex items-center justify-center">
-                  {stage.status === "completed" && <CheckCircle2 className="w-6 h-6 text-green-400" />}
-                  {stage.status === "in-progress" && <Zap className="w-6 h-6 text-yellow-400 animate-pulse" />}
-                  {stage.status === "queued" && <Clock className="w-6 h-6 text-blue-400" />}
-                  {stage.status === "pending" && <AlertCircle className="w-6 h-6 text-white/60" />}
+          <button
+            key={stage.id}
+            onClick={() => onPhaseChange?.(stage.key)}
+            className="w-full text-left"
+          >
+            <Card className="bg-white/5 backdrop-blur-xl border-[#00eaff]/20 overflow-hidden hover:border-[#a24df6]/50 transition-all cursor-pointer">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-white/5 border border-[#00eaff]/20 flex items-center justify-center">
+                    {stage.status === "completed" && <CheckCircle2 className="w-6 h-6 text-green-400" />}
+                    {stage.status === "in-progress" && <Zap className="w-6 h-6 text-yellow-400 animate-pulse" />}
+                    {stage.status === "queued" && <Clock className="w-6 h-6 text-blue-400" />}
+                    {stage.status === "pending" && <AlertCircle className="w-6 h-6 text-white/60" />}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-lg font-bold text-white mb-1">{stage.name}</h3>
+                    <p className="text-white/60 text-sm">{stage.universes} universes • Est. {stage.estimatedTime}</p>
+                  </div>
+                  <Badge className={`${
+                    stage.status === "completed" ? "bg-green-500/20 text-green-400" :
+                    stage.status === "in-progress" ? "bg-yellow-500/20 text-yellow-400" :
+                    stage.status === "queued" ? "bg-blue-500/20 text-blue-400" :
+                    "bg-white/10 text-white/60"
+                  } border-0`}>
+                    {stage.status.replace("-", " ").charAt(0).toUpperCase() + stage.status.slice(1).replace("-", " ")}
+                  </Badge>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-display text-lg font-bold text-white mb-1">{stage.name}</h3>
-                  <p className="text-white/60 text-sm">{stage.universes} universes • Est. {stage.estimatedTime}</p>
-                </div>
-                <Badge className={`${
-                  stage.status === "completed" ? "bg-green-500/20 text-green-400" :
-                  stage.status === "in-progress" ? "bg-yellow-500/20 text-yellow-400" :
-                  stage.status === "queued" ? "bg-blue-500/20 text-blue-400" :
-                  "bg-white/10 text-white/60"
-                } border-0`}>
-                  {stage.status.replace("-", " ").charAt(0).toUpperCase() + stage.status.slice(1).replace("-", " ")}
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </button>
         ))}
       </div>
     </div>
