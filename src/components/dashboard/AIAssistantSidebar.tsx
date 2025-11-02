@@ -190,30 +190,96 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate AI response - context-aware based on phase and mode
     setTimeout(() => {
-      const responses: Record<AssistantMode, string[]> = {
-        story: [
-          "Great idea! Let me craft a compelling logline for you...\n\n*'In a city where memories can be stolen, one detective must recover their own past before it's erased forever.'*\n\nWould you like me to develop this into a full synopsis, or explore alternate directions?",
-          "I've analyzed successful story structures in your genre. Here's a three-act breakdown that could work well...",
-          "Based on your universe's theme, I recommend focusing on character-driven conflict. Let me suggest some compelling character arcs..."
-        ],
-        visual: [
-          "I can help generate visual prompts for your scene. Here's what I suggest:\n\n**Opening Shot**: Aerial view descending through neon-lit cityscape, rain-slicked streets reflecting holographic billboards.\n\n**Mood**: Cyberpunk noir, high contrast\n**Color Palette**: Deep blues, cyan highlights, magenta accents\n\nWant me to create more scene variations?",
-          "For this scene, I recommend a cinematic style inspired by Blade Runner meets Ghost in the Shell. Let me generate specific visual prompts for Runway..."
-        ],
-        voice: [
-          "Perfect! For this scene, I recommend:\n\n**Main Character (Ava)**: \n- Voice: Nova by ElevenLabs\n- Tone: Calm, mysterious\n- Emotional range: Contemplative to determined\n\n**Antagonist (Nexus)**:\n- Voice: Echo by ElevenLabs\n- Tone: Deep, commanding\n- Emotional range: Cold to menacing\n\nWant to preview these voices?",
-          "I've analyzed the emotional beats in your script. Here are the optimal voice modulation points..."
-        ],
-        insight: [
-          "Based on your analytics:\n\n📈 **Trending Up**: Your Sci-Fi universes get 2.3× more engagement\n👥 **Audience**: 68% prefer female narrators\n🎯 **Best Upload Time**: Thursday 7-9 PM EST\n💰 **Revenue Opportunity**: Enable Premium Views for 30% boost\n\nWant detailed recommendations?",
-          "Your last universe 'Digital Horizons' is performing exceptionally well! Here's what's working..."
-        ]
+      const contextAwareResponses: Record<CreationPhase, Record<AssistantMode, string[]>> = {
+        concept: {
+          story: [
+            `Great premise for "${universeTitle}"! Here's a compelling logline:\n\n*'In a world where [core conflict], one [protagonist] must [main goal] before [stakes].'*\n\nLet's develop the world-building details next. What's the primary setting or era?`,
+            `I see strong potential here. Let me suggest a comparable narrative structure:\n\n1. **Setup**: Introduce the world and protagonist's ordinary life\n2. **Inciting Incident**: A revelation that changes everything\n3. **Rising Action**: Escalating challenges with high stakes\n\nWhich story beats resonate with your vision?`
+          ],
+          visual: [
+            `For the visual language of "${universeTitle}", I recommend:\n\n**Aesthetic**: Cyberpunk meets Art Deco\n**Color Palette**: Deep purples, neon cyan, gold accents\n**Mood**: Dystopian yet hopeful\n\nShould we explore different visual styles?`
+          ],
+          voice: [
+            `Let's define the audio identity of "${universeTitle}":\n\n**Narration Style**: First-person internal monologue\n**Music Genre**: Synthwave with orchestral elements\n**Tone**: Contemplative, mysterious\n\nHow does this align with your vision?`
+          ],
+          insight: [
+            `Market analysis for your concept:\n\n📊 **Genre Popularity**: Cyberpunk content gets 2.8× engagement\n👥 **Audience Size**: 18-35 year-olds, tech-savvy\n💡 **Opportunity**: Underserved in interactive format\n🎯 **Recommendation**: Emphasize choice mechanics\n\nRdy to refine the targeting?`
+          ]
+        },
+        scriptwriting: {
+          story: [
+            `Let's develop the main character arc for "${universeTitle}":\n\n**Start**: [Initial belief/weakness]\n**Catalyst**: [The event that changes them]\n**Climax**: [Moment of truth]\n**Resolution**: [New belief/strength]\n\nWho is your protagonist at their core?`,
+            `For the three-act structure:\n\n**Act 1**: Establish world & character (20-30%)\n**Act 2**: Rising conflict & complications (40-60%)\n**Act 3**: Climax & resolution (20-30%)\n\nHow many scenes are you planning?`
+          ],
+          voice: [
+            `Perfect for voice casting in "${universeTitle}":\n\nAnalyzing emotional dialogue beats:\n- 40% contemplative/introspective\n- 35% action-driven/urgent\n- 25% emotional/vulnerable\n\nRecommended voice types & ElevenLabs presets await!`
+          ],
+          visual: [
+            `Scene composition suggestions based on your script:\n\n**Dialogue Scenes**: Close-up intimacy with depth of field\n**Action Beats**: Wide shots emphasizing scale\n**Transitions**: Visual motifs connecting scenes\n\nWhich scene should we detail first?`
+          ],
+          insight: [
+            `Story strength analysis for "${universeTitle}":\n\n✅ **Strong**: Character motivation clarity\n⚠️ **Needs Work**: Second act pacing (flat section at 55%)\n💡 **Suggestion**: Add subplot convergence point\n\nWant specific rewrite suggestions?`
+          ]
+        },
+        visual: {
+          story: [
+            `Narrative visual language for "${universeTitle}":\n\n**Opening**: Wide establishing shot, crane down\n**Key Moments**: Extreme close-ups for emotion\n**Transitions**: Thematic visual motifs\n\nShall we storyboard the key scenes?`
+          ],
+          visual: [
+            `Detailed visual generation for "${universeTitle}" scenes:\n\n**Scene 1 - Setting**: \nA sprawling neon cityscape at dusk, rain-slicked streets reflecting holographic advertisements, flying vehicles creating light trails\n\n**Color Reference**: Blade Runner 2049 meets Cyberpunk aesthetics\n**Key Lighting**: Cold rim lights, warm practical lights\n\nReady to generate prompts for Runway/Midjourney?`,
+            `Let's refine the visual palette for "${universeTitle}":\n\n**Primary**: #00eaff (Neon cyan)\n**Secondary**: #a24df6 (Violet)\n**Tertiary**: Deep blacks and rich purples\n\nHow does this hierarchy feel?`
+          ],
+          voice: [
+            `Visual timing for voice-over in "${universeTitle}":\n\n**Narration Pacing**: Slower during contemplative visuals\n**Dialogue Sync**: Match emotional peaks with visual crescendos\n**Silence**: Strategic pauses emphasize impact\n\nWant timing suggestions?`
+          ],
+          insight: [
+            `Visual market research for "${universeTitle}":\n\n📈 **Trending Visual Styles**: Cyberpunk (↑45%), Minimalist (↑32%)\n🎬 **Cinematography**: Dynamic motion performs 3.2x better\n🎨 **Color Theory**: Neon + pastels gets 2.8x engagement\n\nOptimizing your visuals accordingly...`
+          ]
+        },
+        audio: {
+          story: [
+            `Character voice requirements for "${universeTitle}":\n\nAnalyzing dialogue intensity and emotional range to match voice characteristics...`
+          ],
+          visual: [],
+          voice: [
+            `Perfect voice casting for "${universeTitle}":\n\n**Protagonist (Lead)**:\n- Voice: Nova AI (ElevenLabs) - warm, authoritative\n- Range: E3-E5, conversational pace\n- Accent: American neutral with slight regional flavor\n\n**Ready to preview?**`,
+            `Music theme development for "${universeTitle}":\n\n**Act 1 Theme**: 120 BPM, minor key, mysterious\n**Action Theme**: 140 BPM, driving rhythm, epic\n**Resolution Theme**: Slower, major key, hopeful\n\nLet's license AI music generation via Stable Audio...`
+          ],
+          insight: [
+            `Audio performance analytics for "${universeTitle}":\n\n🎧 **Voice Engagement**: Female narrators +2.3x retention\n🎵 **Music Impact**: Thematic scoring +1.8x emotional response\n📊 **Timing**: Intro music 30-60 seconds optimal\n\nOptimizing audio strategy...`
+          ]
+        },
+        review: {
+          story: [
+            `Pacing analysis for "${universeTitle}":\n\n✅ Act 1: Great hook (3 min) \n⚠️ Act 2: Slight drag at 12:30 mark\n✅ Act 3: Strong climax\n\n💡 Suggestion: Tighten middle section by 45 seconds`
+          ],
+          visual: [
+            `Visual consistency check for "${universeTitle}":\n\n✅ Color grading: Consistent throughout\n✅ Camera language: Clear scene hierarchy\n⚠️ Lighting continuity: Minor issue at transition 5\n\nAll fixable with color pass!`
+          ],
+          voice: [],
+          insight: [
+            `Holistic review of "${universeTitle}":\n\n📊 **Overall Quality**: 8.7/10\n✅ **Strengths**: Compelling story, cohesive visuals\n⚠️ **Improvements**: Tighten pacing, enhance emotional beats\n🎯 **Predicted Performance**: Top 5% in genre\n\nReady to publish?`
+          ]
+        },
+        publishing: {
+          story: [
+            `Compelling description for "${universeTitle}":\n\nHook: "In a world where [stakes], one [hero] must [quest]."\n\nExpanded: [2-3 sentences of intrigue]\n\nCall to action: "Enter the universe. Experience the story."\n\nGood angle?`
+          ],
+          visual: [],
+          voice: [],
+          insight: [
+            `Monetization strategy for "${universeTitle}":\n\n💰 **Recommended Model**: Premium + Ad Revenue\n🎯 **Price Point**: $4.99 for 48-hour access\n📈 **Projected Revenue**: $500-2K first month\n📅 **Launch Timing**: Friday 7 PM EST for weekend reach\n\nReady to configure settings?`
+          ]
+        }
       };
 
-      const modeResponses = responses[mode];
-      const response = modeResponses[Math.floor(Math.random() * modeResponses.length)];
+      const phaseResponses = contextAwareResponses[currentPhase];
+      const modeResponses = phaseResponses[mode] || phaseResponses.story;
+      const response = modeResponses.length > 0
+        ? modeResponses[Math.floor(Math.random() * modeResponses.length)]
+        : `I'm ready to help with "${universeTitle}" in this phase. What would you like to focus on?`;
 
       setIsTyping(false);
       setMessages(prev => [...prev, {
