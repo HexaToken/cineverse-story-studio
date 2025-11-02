@@ -55,14 +55,14 @@ const Dashboard = () => {
           {/* Main Content */}
           <main className="flex-1 p-8 overflow-auto">
             <Routes>
-              <Route 
-                path="/" 
-                element={<DashboardOverview onNewUniverse={() => setBuilderOpen(true)} />} 
+              <Route
+                path="/"
+                element={<DashboardOverview onNewUniverse={() => setBuilderOpen(true)} />}
               />
               <Route path="/universes" element={<UniversesView />} />
               <Route path="/analytics" element={<AnalyticsView />} />
               <Route path="/monetization" element={<MonetizationView />} />
-              <Route path="/workflow" element={<WorkflowView />} />
+              <Route path="/workflow" element={<WorkflowView onPhaseChange={(phase) => setCurrentPhase(phase as any)} />} />
               <Route path="/collaboration" element={<CollaborationView />} />
               <Route path="/settings" element={<SettingsView />} />
             </Routes>
