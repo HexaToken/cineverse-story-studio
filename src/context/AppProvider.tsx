@@ -3,6 +3,8 @@ import { AuthProvider } from './AuthContext';
 import { UniverseProvider } from './UniverseContext';
 import { AnalyticsProvider } from './AnalyticsContext';
 import { FavoritesProvider } from './FavoritesContext';
+import { RemixProvider } from './RemixContext';
+import { CollaborationProvider } from './CollaborationContext';
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -18,7 +20,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       <UniverseProvider>
         <AnalyticsProvider>
           <FavoritesProvider>
-            {children}
+            <RemixProvider>
+              <CollaborationProvider>
+                {children}
+              </CollaborationProvider>
+            </RemixProvider>
           </FavoritesProvider>
         </AnalyticsProvider>
       </UniverseProvider>
