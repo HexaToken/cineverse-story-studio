@@ -31,6 +31,7 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setFavorites(JSON.parse(savedFavorites));
       } catch (error) {
         console.error('Failed to load favorites:', error);
+        localStorage.removeItem('cineverse_favorites');
       }
     }
   }, []);
