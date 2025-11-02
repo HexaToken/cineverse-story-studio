@@ -7,7 +7,8 @@ import { AtlasCompanion } from "@/components/AtlasCompanion";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
 import ScrollProgress from "@/components/ScrollProgress";
 import NotificationContainer from "@/components/Notifications/NotificationContainer";
-import { AppProvider } from "@/context";
+import { AppProvider, SkipToMainContent } from "@/context";
+import "@/styles/accessibility.css";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <SkipToMainContent />
           <ScrollProgress />
           <AnimatedRoutes />
           <AtlasCompanion />

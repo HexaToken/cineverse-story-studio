@@ -34,5 +34,9 @@ export type { Notification, NotificationType, NotificationContextType } from './
 export { AtlasCompanionProvider, useAtlasCompanion } from './AtlasCompanionContext';
 export type { Recommendation, AtlasCompanionContextType } from './AtlasCompanionContext';
 
+// Accessibility Context
+export { AccessibilityProvider, useAccessibility, SkipToMainContent } from './AccessibilityContext';
+export type { AccessibilityContextType } from './AccessibilityContext';
+
 // App Provider
 export { AppProvider } from './AppProvider';

@@ -8,6 +8,7 @@ import { CollaborationProvider } from './CollaborationContext';
 import { SearchProvider } from './SearchContext';
 import { NotificationProvider } from './NotificationContext';
 import { AtlasCompanionProvider } from './AtlasCompanionContext';
+import { AccessibilityProvider } from './AccessibilityContext';
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -19,24 +20,26 @@ interface AppProviderProps {
  */
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <NotificationProvider>
-      <AtlasCompanionProvider>
-        <SearchProvider>
-          <AuthProvider>
-            <UniverseProvider>
-              <AnalyticsProvider>
-                <FavoritesProvider>
-                  <RemixProvider>
-                    <CollaborationProvider>
-                      {children}
-                    </CollaborationProvider>
-                  </RemixProvider>
-                </FavoritesProvider>
-              </AnalyticsProvider>
-            </UniverseProvider>
-          </AuthProvider>
-        </SearchProvider>
-      </AtlasCompanionProvider>
-    </NotificationProvider>
+    <AccessibilityProvider>
+      <NotificationProvider>
+        <AtlasCompanionProvider>
+          <SearchProvider>
+            <AuthProvider>
+              <UniverseProvider>
+                <AnalyticsProvider>
+                  <FavoritesProvider>
+                    <RemixProvider>
+                      <CollaborationProvider>
+                        {children}
+                      </CollaborationProvider>
+                    </RemixProvider>
+                  </FavoritesProvider>
+                </AnalyticsProvider>
+              </UniverseProvider>
+            </AuthProvider>
+          </SearchProvider>
+        </AtlasCompanionProvider>
+      </NotificationProvider>
+    </AccessibilityProvider>
   );
 };
