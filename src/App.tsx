@@ -41,6 +41,7 @@ const App = () => (
           <Route path="/story/:id" element={<StoryPlayer />} />
           <Route path="/originals" element={<OriginalDetail />} />
           <Route path="/creator/:id" element={<CreatorProfile />} />
+          <Route path="/hub/:id" element={<CreatorHub />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
           <Route path="/studio" element={<Studio />} />
           <Route path="/publish" element={<Publish />} />
