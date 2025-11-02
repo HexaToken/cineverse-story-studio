@@ -15,6 +15,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollProgress />
         <AnimatedRoutes />
         <AtlasCompanion />
       </BrowserRouter>
