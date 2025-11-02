@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { AtlasCompanion } from "@/components/AtlasCompanion";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const queryClient = new QueryClient();
 
