@@ -5,8 +5,12 @@ import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import AIAssistantSidebar from "@/components/dashboard/AIAssistantSidebar";
 import DashboardOverview from "@/components/dashboard/DashboardOverview";
 import UniverseBuilder from "@/components/UniverseBuilder";
-import { Bell, User, Sparkles } from "lucide-react";
+import { Bell, User, Sparkles, TrendingUp, DollarSign, Eye, Heart, Users, BarChart3, ArrowUpRight, ArrowDownRight, Download, Filter, Settings, Mail, Clock, CheckCircle2, AlertCircle, Zap, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const Dashboard = () => {
   const [builderOpen, setBuilderOpen] = useState(false);
