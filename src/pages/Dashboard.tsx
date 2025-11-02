@@ -295,14 +295,14 @@ const MonetizationView = () => {
   );
 };
 
-const WorkflowView = () => {
+const WorkflowView = ({ onPhaseChange }: { onPhaseChange?: (phase: string) => void }) => {
   const stages = [
-    { id: 1, name: "Concept", status: "completed", universes: 12, estimatedTime: "2-3 days" },
-    { id: 2, name: "Scriptwriting", status: "in-progress", universes: 3, estimatedTime: "5-7 days" },
-    { id: 3, name: "Visual Generation", status: "queued", universes: 5, estimatedTime: "3-5 days" },
-    { id: 4, name: "Audio & VFX", status: "queued", universes: 5, estimatedTime: "4-6 days" },
-    { id: 5, name: "Review & Polish", status: "pending", universes: 2, estimatedTime: "2-3 days" },
-    { id: 6, name: "Publishing", status: "pending", universes: 0, estimatedTime: "1 day" }
+    { id: 1, name: "Concept", key: "concept", status: "completed", universes: 12, estimatedTime: "2-3 days" },
+    { id: 2, name: "Scriptwriting", key: "scriptwriting", status: "in-progress", universes: 3, estimatedTime: "5-7 days" },
+    { id: 3, name: "Visual Generation", key: "visual", status: "queued", universes: 5, estimatedTime: "3-5 days" },
+    { id: 4, name: "Audio & VFX", key: "audio", status: "queued", universes: 5, estimatedTime: "4-6 days" },
+    { id: 5, name: "Review & Polish", key: "review", status: "pending", universes: 2, estimatedTime: "2-3 days" },
+    { id: 6, name: "Publishing", key: "publishing", status: "pending", universes: 0, estimatedTime: "1 day" }
   ];
 
   return (
