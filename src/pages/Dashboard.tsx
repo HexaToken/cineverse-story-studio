@@ -71,7 +71,12 @@ const Dashboard = () => {
       </div>
 
       {/* AI Assistant Sidebar */}
-      <AIAssistantSidebar isOpen={aiAssistantOpen} onClose={() => setAiAssistantOpen(false)} />
+      <AIAssistantSidebar
+        isOpen={aiAssistantOpen}
+        onClose={() => setAiAssistantOpen(false)}
+        currentPhase={currentPhase}
+        universeTitle={universeTitle}
+      />
 
       {/* Universe Builder Modal */}
       <UniverseBuilder open={builderOpen} onOpenChange={setBuilderOpen} />
