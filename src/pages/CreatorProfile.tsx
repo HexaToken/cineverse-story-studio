@@ -473,20 +473,27 @@ const CreatorProfile = () => {
           {/* Behind the Scenes Tab */}
           {activeTab === "behind" && (
             <div className="space-y-8">
-              <h2 className="font-display text-4xl font-bold text-white">Inside the Studio</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-4xl font-bold text-white">Inside the Studio</h2>
+                <Link to="/studio">
+                  <Button className="bg-gradient-to-r from-[#a24df6] to-[#00eaff] text-white">
+                    <Clapperboard className="w-4 h-4 mr-2" />
+                    Open Studio
+                  </Button>
+                </Link>
+              </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-lg bg-gradient-to-br from-[#00eaff]/10 to-[#a24df6]/10 border border-white/10 cursor-pointer hover:border-[#00eaff]/40 transition-all group relative overflow-hidden"
-                  >
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Eye className="w-10 h-10 text-white/50 group-hover:text-white/80 transition-all" />
+                  <Link key={i} to="/studio">
+                    <div className="aspect-square rounded-lg bg-gradient-to-br from-[#00eaff]/10 to-[#a24df6]/10 border border-white/10 cursor-pointer hover:border-[#00eaff]/40 transition-all group relative overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Eye className="w-10 h-10 text-white/50 group-hover:text-white/80 transition-all" />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform">
+                        <p className="text-white/90 text-sm">Prompt Test #{i}: Cyber Dreamscape</p>
+                      </div>
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform">
-                      <p className="text-white/90 text-sm">Prompt Test #{i}: Cyber Dreamscape</p>
-                    </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
