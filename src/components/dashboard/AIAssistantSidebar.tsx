@@ -151,18 +151,31 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
     scrollToBottom();
   }, [messages]);
 
+  const getWelcomeMessage = () => {
+    const phaseMessages: Record<CreationPhase, string> = {
+      concept: `Great! Let's build "${universeTitle}" from the ground up 🌌 I can help you develop the core concept, define your universe's rules, and shape your vision. What's your starting point?`,
+      scriptwriting: `Now for the fun part — bringing "${universeTitle}" to life through story 📖 I'll help with character development, dialogue, and narrative structure. Ready to write?`,
+      visual: `Time to visualize "${universeTitle}" 🎨 I can generate detailed visual prompts, define your aesthetic, and suggest cinematography. What scene shall we create?`,
+      audio: `Let's add voice and music to "${universeTitle}" 🎵 I'll help with voice casting, music themes, and sound design. Who are your characters?`,
+      review: `Almost there! Let's polish "${universeTitle}" to perfection ✨ I can help verify consistency, analyze pacing, and gather insights. What needs refining?`,
+      publishing: `Ready to launch "${universeTitle}" to the world 🚀 I'll help with metadata, promotion, and monetization strategy. What's your next move?`
+    };
+
+    return phaseMessages[currentPhase];
+  };
+
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       // Welcome message
       setTimeout(() => {
         setMessages([{
           role: 'assistant',
-          content: "Hey creator 👋 — ready to bring your next universe to life? I can help with story ideas, scene generation, voice casting, or analytics insights. What would you like to create today?",
+          content: getWelcomeMessage(),
           timestamp: new Date()
         }]);
       }, 500);
     }
-  }, [isOpen]);
+  }, [isOpen, currentPhase, universeTitle]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
