@@ -17,6 +17,8 @@ import CreatorHub from '@/pages/CreatorHub';
 import Dashboard from '@/pages/Dashboard';
 import Studio from '@/pages/Studio';
 import Publish from '@/pages/Publish';
+import Remix from '@/pages/Remix';
+import Collaboration from '@/pages/Collaboration';
 import NotFound from '@/pages/NotFound';
 
 interface PageConfig {
@@ -45,6 +47,8 @@ const AnimatedRoutes = () => {
     { path: '/dashboard/*', element: <Dashboard />, direction: 'left' },
     { path: '/studio', element: <Studio />, direction: 'up' },
     { path: '/publish', element: <Publish />, direction: 'up' },
+    { path: '/remix/:universeId', element: <Remix />, direction: 'right' },
+    { path: '/collaboration', element: <Collaboration />, direction: 'right' },
     { path: '*', element: <NotFound />, direction: 'left' }
   ];
 
