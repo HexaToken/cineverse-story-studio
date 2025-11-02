@@ -101,14 +101,47 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
     { id: 'insight' as AssistantMode, label: 'Insight', icon: BarChart3, color: '#00eaff' }
   ];
 
-  const suggestedPrompts = [
-    { text: "Generate a story logline", icon: "✍️", mode: 'story' },
-    { text: "Describe my main universe setting", icon: "🪐", mode: 'story' },
-    { text: "Cast AI voice actors for my scene", icon: "🎭", mode: 'voice' },
-    { text: "Suggest cinematic music themes", icon: "🎶", mode: 'voice' },
-    { text: "Explain how to monetize my universe", icon: "💡", mode: 'insight' },
-    { text: "Show me analytics for my last release", icon: "🧩", mode: 'insight' }
-  ];
+  // Context-aware prompts based on creation phase
+  const phasePrompts: Record<CreationPhase, typeof suggestedPrompts> = {
+    concept: [
+      { text: "Generate a compelling story logline", icon: "✍️", mode: 'story' },
+      { text: "Define the core setting and rules", icon: "🪐", mode: 'story' },
+      { text: "Who is my target audience?", icon: "👥", mode: 'insight' },
+      { text: "What genres would this fit?", icon: "🎬", mode: 'story' }
+    ],
+    scriptwriting: [
+      { text: "Develop the main character arc", icon: "🎭", mode: 'story' },
+      { text: "Write a three-act story structure", icon: "📖", mode: 'story' },
+      { text: "Cast AI voice actors for my characters", icon: "🎤", mode: 'voice' },
+      { text: "Refine dialogue for this scene", icon: "💬", mode: 'story' }
+    ],
+    visual: [
+      { text: "Create visual prompts for this scene", icon: "🎨", mode: 'visual' },
+      { text: "Define color palette and mood", icon: "🌈", mode: 'visual' },
+      { text: "Suggest cinematic camera movements", icon: "📹", mode: 'visual' },
+      { text: "Generate detailed scene compositions", icon: "🖼️", mode: 'visual' }
+    ],
+    audio: [
+      { text: "Suggest voice actors and tones", icon: "🎭", mode: 'voice' },
+      { text: "Generate music themes for emotional beats", icon: "🎶", mode: 'voice' },
+      { text: "Plan sound design and effects", icon: "🔊", mode: 'voice' },
+      { text: "Optimize audio levels and mixing", icon: "🎚️", mode: 'voice' }
+    ],
+    review: [
+      { text: "Check narrative pacing and flow", icon: "⏱️", mode: 'story' },
+      { text: "Verify visual consistency", icon: "✅", mode: 'visual' },
+      { text: "Analyze engagement potential", icon: "📊", mode: 'insight' },
+      { text: "Suggest improvements based on feedback", icon: "💡", mode: 'insight' }
+    ],
+    publishing: [
+      { text: "Create compelling title and description", icon: "📝", mode: 'story' },
+      { text: "Generate tags and metadata", icon: "🏷️", mode: 'story' },
+      { text: "Plan monetization strategy", icon: "💰", mode: 'insight' },
+      { text: "Create promotional campaign", icon: "📢", mode: 'insight' }
+    ]
+  };
+
+  const suggestedPrompts = phasePrompts[currentPhase];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
