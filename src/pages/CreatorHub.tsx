@@ -67,7 +67,7 @@ const CreatorHub = () => {
     { name: "Echo Studios", type: "Joint Universe", views: "450K", date: "2024-06-10", revenue: "$3.2K" },
     { name: "Visionary Collective", type: "Music Score", views: "320K", date: "2024-05-28", revenue: "$1.8K" },
     { name: "Quantum Narratives", type: "Story Co-write", views: "285K", date: "2024-05-15", revenue: "$2.1K" },
-    { name: "NeonDreams Studio", type: "Visual FX", views: "198K", date: "2024-04-30", revenue: "$1.5K }
+    { name: "NeonDreams Studio", type: "Visual FX", views: "198K", date: "2024-04-30", revenue: "$1.5K" }
   ];
 
   const universes = [
