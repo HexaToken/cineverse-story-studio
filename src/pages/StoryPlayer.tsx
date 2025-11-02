@@ -86,11 +86,11 @@ const StoryPlayer = () => {
   const scene = scenes[currentScene];
 
   return (
-    <div className="relative h-screen w-screen bg-background overflow-hidden">
+    <div className="relative h-screen w-screen bg-gradient-to-b from-[#0a0b1a] to-[#10182e] overflow-hidden">
       {/* Video Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/20">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#00eaff]/20 via-[#0a0b1a] to-[#a24df6]/20">
         <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#10182e] via-transparent to-transparent" />
         {/* Vignette effect */}
         <div className="absolute inset-0" style={{
           background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.7) 100%)'
