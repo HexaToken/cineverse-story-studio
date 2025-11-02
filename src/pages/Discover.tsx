@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {
@@ -17,6 +14,18 @@ import {
   Users,
   Radio,
 } from "lucide-react";
+import {
+  CosmoButton,
+  CosmoSection,
+  CosmoHeading,
+  CosmoGrid,
+  CosmoBadge,
+  SectionHeader,
+  UniverseCard,
+  CreatorCard,
+  CosmoCard,
+  CosmoCardBody,
+} from "@/components/lib";
 
 const Discover = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,32 +111,36 @@ const Discover = () => {
           </div>
 
           <div className="flex gap-4 justify-center flex-wrap">
-            <Button
+            <CosmoButton
               asChild
-              className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white text-lg px-8 py-6 shadow-[0_0_30px_rgba(0,234,255,0.4)]"
+              cosmicVariant="primary"
+              size="lg"
+              className="text-lg"
             >
               <Link to="/originals">
                 <Play className="w-5 h-5 mr-2" />
                 Watch Originals
               </Link>
-            </Button>
-            <Button
+            </CosmoButton>
+            <CosmoButton
               asChild
-              variant="outline"
-              className="border-[#00eaff]/40 text-[#00eaff] text-lg px-8 py-6"
+              cosmicVariant="outline"
+              size="lg"
+              className="text-lg"
             >
               <Link to="/create">
                 <Sparkles className="w-5 h-5 mr-2" />
                 Start Creating
               </Link>
-            </Button>
-            <Button
-              variant="outline"
-              className="border-[#a24df6]/40 text-[#a24df6] text-lg px-8 py-6"
+            </CosmoButton>
+            <CosmoButton
+              cosmicVariant="secondary"
+              size="lg"
+              className="text-lg"
             >
               <Zap className="w-5 h-5 mr-2" />
               AI Surprise Me
-            </Button>
+            </CosmoButton>
           </div>
         </div>
       </section>
@@ -135,77 +148,56 @@ const Discover = () => {
       <div className="max-w-7xl mx-auto px-6 py-12 space-y-16">
         {/* Trending Now */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <TrendingUp className="w-6 h-6 text-[#00eaff]" />
-            <h2 className="font-display text-3xl font-bold text-white">Trending Now</h2>
+            <CosmoHeading size="lg" level="h2">Trending Now</CosmoHeading>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
             {trendingUniverses.map((universe) => (
-              <Link
-                key={universe.id}
-                to={`/universe/${universe.id}`}
-              >
-                <Card className="flex-shrink-0 w-80 bg-white/5 backdrop-blur-xl border-[#00eaff]/20 hover:border-[#00eaff]/40 transition-all group cursor-pointer">
-                  <div className="relative">
-                    <Badge className="absolute top-3 left-3 bg-red-500/80 text-white border-0 z-10">
-                      🔥 Trending
-                    </Badge>
-                    <div className={`aspect-video bg-gradient-to-br from-[#00eaff]/30 to-[#a24df6]/30 flex items-center justify-center`}>
-                      <Play className="w-16 h-16 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
-                    </div>
-                    <div className="p-4 space-y-2">
-                      <h3 className="font-display text-xl font-bold text-white">{universe.title}</h3>
-                      <div className="flex items-center justify-between">
-                        <p className="text-white/60 text-sm">by @{universe.creator}</p>
-                        <Badge className="bg-[#00eaff]/10 text-[#00eaff] border-[#00eaff]/30">
-                          {universe.genre}
-                        </Badge>
-                      </div>
-                      <p className="text-white/50 text-sm">{universe.views} views</p>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
+              <div key={universe.id} className="flex-shrink-0 w-80">
+                <UniverseCard
+                  id={universe.id}
+                  title={universe.title}
+                  creator={universe.creator}
+                  thumbnail={universe.thumbnail as any}
+                  genre={universe.genre}
+                  views={universe.views}
+                  href={`/universe/${universe.id}`}
+                />
+              </div>
             ))}
           </div>
         </section>
 
         {/* For You */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <Sparkles className="w-6 h-6 text-[#a24df6]" />
-            <h2 className="font-display text-3xl font-bold text-white">Tailored by CineVerse AI</h2>
+            <CosmoHeading size="lg" level="h2">Tailored by CineVerse AI</CosmoHeading>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <CosmoGrid columns={4}>
             {forYouUniverses.map((universe) => (
-              <Card
-                key={universe.id}
-                className="bg-white/5 backdrop-blur-xl border-[#a24df6]/20 hover:border-[#a24df6]/40 transition-all group cursor-pointer overflow-hidden"
-              >
+              <CosmoCard key={universe.id} variant="interactive" className="overflow-hidden group">
                 <div className="aspect-video bg-gradient-to-br from-[#a24df6]/20 to-[#00eaff]/20 flex items-center justify-center relative">
                   <Play className="w-12 h-12 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-2 right-2 text-white/60 hover:text-red-400"
-                  >
+                  <button className="absolute top-2 right-2 text-white/60 hover:text-[#ff006e] transition-colors">
                     <Heart className="w-5 h-5" />
-                  </Button>
+                  </button>
                 </div>
-                <div className="p-4 space-y-2">
+                <CosmoCardBody className="space-y-2">
                   <h3 className="font-display text-lg font-bold text-white">{universe.title}</h3>
                   <div className="flex gap-2">
-                    <Badge className="bg-[#a24df6]/10 text-[#a24df6] border-[#a24df6]/30 text-xs">
+                    <CosmoBadge variant="purple" size="sm">
                       {universe.genre}
-                    </Badge>
-                    <Badge className="bg-white/5 text-white/70 text-xs">
+                    </CosmoBadge>
+                    <CosmoBadge variant="default" size="sm">
                       {universe.mood}
-                    </Badge>
+                    </CosmoBadge>
                   </div>
-                </div>
-              </Card>
+                </CosmoCardBody>
+              </CosmoCard>
             ))}
-          </div>
+          </CosmoGrid>
         </section>
 
         {/* Genre Rows */}
