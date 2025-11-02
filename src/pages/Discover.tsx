@@ -321,80 +321,84 @@ const Discover = () => {
 
         {/* CineVerse Originals */}
         <section>
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00eaff] to-[#a24df6] flex items-center justify-center">
               <span className="text-white font-bold text-sm">O</span>
             </div>
-            <h2 className="font-display text-3xl font-bold text-white">CineVerse Originals</h2>
+            <CosmoHeading size="lg" level="h2">CineVerse Originals</CosmoHeading>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <CosmoGrid columns={3}>
             {originals.map((original, i) => (
-              <Card
+              <CosmoCard
                 key={i}
-                className="bg-white/5 backdrop-blur-xl border-[#00eaff]/30 hover:border-[#00eaff]/50 transition-all group cursor-pointer"
+                variant="glowing"
+                className="border-[#00eaff]/30 hover:border-[#00eaff]/50 overflow-hidden flex flex-col"
               >
-                <div className="relative">
-                  <Badge className="absolute top-3 left-3 bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white border-0 z-10">
-                    ORIGINAL
-                  </Badge>
-                  <div className="aspect-video bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center">
-                    <Play className="w-16 h-16 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
+                <div className="aspect-video bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center relative">
+                  <div className="absolute top-3 left-3">
+                    <CosmoBadge variant="cyan">
+                      ORIGINAL
+                    </CosmoBadge>
                   </div>
-                  <div className="p-6 space-y-4">
-                    <h3 className="font-display text-xl font-bold text-white">{original.title}</h3>
-                    <p className="text-white/60">{original.episodes} Episodes</p>
-                    <div className="flex gap-2">
-                      <Button className="flex-1 bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white">
-                        <Play className="w-4 h-4 mr-2" />
-                        Play
-                      </Button>
-                      <Button variant="outline" className="flex-1 border-white/20 text-white">
-                        Info
-                      </Button>
-                    </div>
-                  </div>
+                  <Play className="w-16 h-16 text-white/50 group-hover:text-white/80 transition-all group-hover:scale-110" />
                 </div>
-              </Card>
+                <CosmoCardBody className="flex-1 flex flex-col">
+                  <h3 className="font-display text-xl font-bold text-white mb-2">{original.title}</h3>
+                  <p className="text-white/60 mb-4">{original.episodes} Episodes</p>
+                  <div className="flex gap-2 mt-auto">
+                    <CosmoButton cosmicVariant="primary" size="sm" className="flex-1">
+                      <Play className="w-4 h-4 mr-2" />
+                      Play
+                    </CosmoButton>
+                    <CosmoButton cosmicVariant="secondary" size="sm" className="flex-1">
+                      Info
+                    </CosmoButton>
+                  </div>
+                </CosmoCardBody>
+              </CosmoCard>
             ))}
-          </div>
+          </CosmoGrid>
         </section>
 
         {/* Footer CTA */}
-        <section className="relative overflow-hidden rounded-2xl">
+        <CosmoSection bordered className="relative overflow-hidden rounded-2xl">
           <div className="absolute inset-0 bg-gradient-to-r from-[#00eaff]/20 to-[#a24df6]/20" />
-          <div className="relative text-center py-16 px-6 space-y-6">
-            <h2 className="font-display text-4xl font-bold text-white">
+          <div className="relative text-center space-y-6">
+            <CosmoHeading size="2xl" level="h2" gradient>
               Your imagination deserves the big screen
-            </h2>
+            </CosmoHeading>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Start your own universe today and join thousands of creators shaping the future of storytelling.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Button
+              <CosmoButton
                 asChild
-                className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] text-white text-lg px-8 py-6"
+                cosmicVariant="primary"
+                size="lg"
+                className="text-lg"
               >
                 <Link to="/create">
                   <Sparkles className="w-5 h-5 mr-2" />
                   Create with AI
                 </Link>
-              </Button>
-              <Button
+              </CosmoButton>
+              <CosmoButton
                 asChild
-                variant="outline"
-                className="border-white/40 text-white text-lg px-8 py-6"
+                cosmicVariant="secondary"
+                size="lg"
+                className="text-lg"
               >
                 <Link to="/dashboard">
                   <Play className="w-5 h-5 mr-2" />
                   Join CineVerse as Creator
                 </Link>
-              </Button>
+              </CosmoButton>
             </div>
             <p className="text-white/40 text-sm pt-4">
               Powered by CineVerse AI Engine • 2025
             </p>
           </div>
-        </section>
+        </CosmoSection>
       </div>
 
       <Footer />
