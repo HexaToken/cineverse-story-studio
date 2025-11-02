@@ -328,13 +328,18 @@ const AIAssistantSidebar = ({ isOpen, onClose, currentPhase = 'concept', univers
       <div className="relative h-full flex flex-col border-l-2 border-[#00eaff]/30">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,234,255,0.3)] animate-pulse">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00eaff]/20 to-[#a24df6]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,234,255,0.3)] animate-pulse flex-shrink-0">
               <Sparkles className="w-5 h-5 text-[#00eaff]" />
             </div>
-            <div>
-              <h2 className="font-display text-lg font-bold text-white">CineVerse AI Assistant</h2>
-              <p className="text-xs text-white/60">Your Creative Copilot</p>
+            <div className="min-w-0">
+              <h2 className="font-display text-lg font-bold text-white truncate">CineVerse AI</h2>
+              <div className="flex items-center gap-2 text-xs text-white/60">
+                <span className="inline-block px-2 py-0.5 rounded-full bg-[#a24df6]/20 text-[#a24df6] capitalize truncate">
+                  {currentPhase}
+                </span>
+                <span className="truncate">{universeTitle}</span>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
