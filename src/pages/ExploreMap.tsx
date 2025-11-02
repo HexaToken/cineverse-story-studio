@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars, Text } from "@react-three/drei";
+import { OrbitControls, Stars, Text, Line } from "@react-three/drei";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +20,10 @@ import {
   TrendingUp,
   Users,
   Eye,
+  Filter,
+  X,
+  ChevronDown,
+  Star,
 } from "lucide-react";
 import * as THREE from "three";
 
@@ -56,52 +60,103 @@ const universeNodes: UniverseNode[] = [
   { id: 12, title: "Dragon's Dawn", position: [-0.7, 2.2, 1], color: "#ffd700", genre: "Fantasy", creator: "StarForge", views: "780K", rating: 4.7 },
 ];
 
-const UniverseSphere = ({ node, onClick, isHovered, onHover }: { 
-  node: UniverseNode; 
-  onClick: () => void; 
+const UniverseSphere = ({
+  node,
+  onClick,
+  isHovered,
+  onHover,
+  sizeMultiplier = 1,
+  isFiltered = true
+}: {
+  node: UniverseNode;
+  onClick: () => void;
   isHovered: boolean;
   onHover: (hovered: boolean) => void;
+  sizeMultiplier?: number;
+  isFiltered?: boolean;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  
+
+  // Calculate size based on views
+  const baseSize = 0.15 * sizeMultiplier * (isHovered ? 1.5 : 1);
+
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.002;
-      if (isHovered) {
-        meshRef.current.scale.lerp(new THREE.Vector3(1.5, 1.5, 1.5), 0.1);
-      } else {
-        meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
-      }
+      meshRef.current.rotation.x += 0.0005;
+
+      const targetScale = isHovered ? 1.6 : 1;
+      meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
     }
   });
 
   return (
-    <group position={node.position}>
-      <mesh
-        ref={meshRef}
-        onClick={onClick}
-        onPointerOver={() => onHover(true)}
-        onPointerOut={() => onHover(false)}
-      >
-        <sphereGeometry args={[0.15, 32, 32]} />
+    <group position={node.position} opacity={isFiltered ? 1 : 0.2}>
+      {/* Outer glow ring */}
+      <mesh>
+        <torusGeometry args={[baseSize + 0.08, 0.02, 16, 100]} />
         <meshStandardMaterial
           color={node.color}
           emissive={node.color}
-          emissiveIntensity={isHovered ? 1.5 : 0.5}
-          metalness={0.8}
-          roughness={0.2}
+          emissiveIntensity={0.4}
+          transparent
+          opacity={isFiltered ? 0.6 : 0.2}
         />
       </mesh>
-      {isHovered && (
-        <Text
-          position={[0, 0.4, 0]}
-          fontSize={0.1}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-          {node.title}
-        </Text>
+
+      {/* Main sphere */}
+      <mesh
+        ref={meshRef}
+        onClick={() => isFiltered && onClick()}
+        onPointerOver={() => isFiltered && onHover(true)}
+        onPointerOut={() => isFiltered && onHover(false)}
+        style={{ cursor: isFiltered ? 'pointer' : 'default' }}
+      >
+        <sphereGeometry args={[baseSize, 32, 32]} />
+        <meshStandardMaterial
+          color={node.color}
+          emissive={node.color}
+          emissiveIntensity={isHovered ? 2 : 0.8}
+          metalness={0.9}
+          roughness={0.1}
+        />
+      </mesh>
+
+      {/* Glow effect */}
+      <mesh>
+        <sphereGeometry args={[baseSize + 0.05, 16, 16]} />
+        <meshStandardMaterial
+          color={node.color}
+          emissive={node.color}
+          emissiveIntensity={isHovered ? 1.2 : 0.3}
+          transparent
+          opacity={isHovered ? 0.4 : 0.1}
+        />
+      </mesh>
+
+      {/* Labels */}
+      {isHovered && isFiltered && (
+        <>
+          <Text
+            position={[0, baseSize + 0.3, 0]}
+            fontSize={0.08}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+            fontWeight="bold"
+          >
+            {node.title}
+          </Text>
+          <Text
+            position={[0, baseSize + 0.15, 0]}
+            fontSize={0.05}
+            color="#00eaff"
+            anchorX="center"
+            anchorY="middle"
+          >
+            {node.genre}
+          </Text>
+        </>
       )}
     </group>
   );
@@ -114,8 +169,90 @@ const ExploreMap = () => {
   const [aiMode, setAiMode] = useState(false);
   const [mapView, setMapView] = useState<"universe" | "creator" | "genre">("universe");
 
+  // Filtering states
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedCreators, setSelectedCreators] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [minRating, setMinRating] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
+  const [sortBy, setSortBy] = useState<"views" | "rating" | "new">("views");
+
+  // Camera controls
+  const orbitControlsRef = useRef<any>(null);
+
   const handleNodeClick = (node: UniverseNode) => {
     setSelectedNode(node);
+  };
+
+  // Get unique genres and creators
+  const allGenres = [...new Set(universeNodes.map(n => n.genre))];
+  const allCreators = [...new Set(universeNodes.map(n => n.creator))];
+
+  // Filter nodes
+  const filteredNodes = universeNodes.filter(node => {
+    // Genre filter
+    if (selectedGenres.length > 0 && !selectedGenres.includes(node.genre)) {
+      return false;
+    }
+
+    // Creator filter
+    if (selectedCreators.length > 0 && !selectedCreators.includes(node.creator)) {
+      return false;
+    }
+
+    // Rating filter
+    if (node.rating < minRating) {
+      return false;
+    }
+
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      return (
+        node.title.toLowerCase().includes(query) ||
+        node.creator.toLowerCase().includes(query) ||
+        node.genre.toLowerCase().includes(query)
+      );
+    }
+
+    return true;
+  });
+
+  // Sort filtered nodes
+  const sortedNodes = [...filteredNodes].sort((a, b) => {
+    if (sortBy === "views") {
+      return parseInt(b.views) - parseInt(a.views);
+    } else if (sortBy === "rating") {
+      return b.rating - a.rating;
+    }
+    return 0;
+  });
+
+  // Calculate size multiplier based on views
+  const maxViews = Math.max(...universeNodes.map(n => parseInt(n.views)));
+  const getSizeMultiplier = (node: UniverseNode) => {
+    const views = parseInt(node.views);
+    return 0.8 + (views / maxViews) * 0.7;
+  };
+
+  // Toggle filters
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres(prev =>
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+    );
+  };
+
+  const toggleCreator = (creator: string) => {
+    setSelectedCreators(prev =>
+      prev.includes(creator) ? prev.filter(c => c !== creator) : [...prev, creator]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedGenres([]);
+    setSelectedCreators([]);
+    setSearchQuery("");
+    setMinRating(0);
   };
 
   const genreStats = {
@@ -182,10 +319,11 @@ const ExploreMap = () => {
         className="absolute inset-0"
       >
         <color attach="background" args={["#0a0b1a"]} />
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#a24df6" />
-        
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={1.2} />
+        <pointLight position={[-10, -10, -10]} intensity={0.6} color="#a24df6" />
+        <pointLight position={[0, 5, 0]} intensity={0.5} color="#ff006e" />
+
         <Stars
           radius={100}
           depth={50}
@@ -195,32 +333,51 @@ const ExploreMap = () => {
           fade
           speed={0.5}
         />
-        
-        {universeNodes.map((node) => (
+
+        {sortedNodes.map((node) => (
           <UniverseSphere
             key={node.id}
             node={node}
             onClick={() => handleNodeClick(node)}
             isHovered={hoveredId === node.id}
             onHover={(hovered) => setHoveredId(hovered ? node.id : null)}
+            sizeMultiplier={getSizeMultiplier(node)}
+            isFiltered={true}
           />
         ))}
-        
+
+        {/* Render filtered out nodes with reduced opacity */}
+        {universeNodes
+          .filter(node => !sortedNodes.includes(node))
+          .map((node) => (
+            <UniverseSphere
+              key={`filtered-${node.id}`}
+              node={node}
+              onClick={() => {}}
+              isHovered={false}
+              onHover={() => {}}
+              sizeMultiplier={getSizeMultiplier(node)}
+              isFiltered={false}
+            />
+          ))}
+
         <OrbitControls
+          ref={orbitControlsRef}
           enableZoom={true}
           enablePan={true}
           enableRotate={true}
           autoRotate={aiMode}
           autoRotateSpeed={0.5}
           minDistance={3}
-          maxDistance={15}
+          maxDistance={20}
+          zoomSpeed={1.2}
         />
       </Canvas>
 
       {/* Top Navigation */}
-      <div className="absolute top-0 left-0 right-0 z-10 p-6">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <Link to="/" className="flex items-center gap-2">
+      <div className="absolute top-0 left-0 right-0 z-10 p-6 border-b border-white/10 bg-gradient-to-b from-black/50 to-transparent">
+        <div className="flex items-center justify-between max-w-7xl mx-auto gap-6">
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
             <h1 className="font-display text-2xl font-bold">
               <span className="bg-gradient-to-r from-[#00eaff] to-[#a24df6] bg-clip-text text-transparent">
                 CINEVERSE
@@ -231,50 +388,172 @@ const ExploreMap = () => {
             </Badge>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          <div className="flex items-center gap-3 flex-1 max-w-xl">
+            <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
               <Input
                 placeholder="Search universes, creators, or tags..."
-                className="pl-10 w-80 bg-white/5 backdrop-blur-xl border-white/10 text-white"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 w-full bg-white/5 backdrop-blur-xl border-white/10 text-white"
               />
             </div>
 
-            <div className="flex gap-2 bg-white/5 backdrop-blur-xl rounded-lg p-1 border border-white/10">
-              <button
-                onClick={() => setMapView("universe")}
-                className={`px-4 py-2 rounded text-sm font-medium transition-all ${
-                  mapView === "universe"
-                    ? "bg-[#00eaff]/20 text-[#00eaff]"
-                    : "text-white/60 hover:text-white/80"
-                }`}
-              >
-                Universe View
-              </button>
-              <button
-                onClick={() => setMapView("creator")}
-                className={`px-4 py-2 rounded text-sm font-medium transition-all ${
-                  mapView === "creator"
-                    ? "bg-[#a24df6]/20 text-[#a24df6]"
-                    : "text-white/60 hover:text-white/80"
-                }`}
-              >
-                Creator View
-              </button>
-              <button
-                onClick={() => setMapView("genre")}
-                className={`px-4 py-2 rounded text-sm font-medium transition-all ${
-                  mapView === "genre"
-                    ? "bg-[#00eaff]/20 text-[#00eaff]"
-                    : "text-white/60 hover:text-white/80"
-                }`}
-              >
-                Genre View
-              </button>
-            </div>
+            <Button
+              onClick={() => setShowFilters(!showFilters)}
+              variant="ghost"
+              size="icon"
+              className={`text-white/70 hover:text-white ${showFilters ? 'bg-white/10' : ''}`}
+            >
+              <Filter className="w-5 h-5" />
+            </Button>
+          </div>
+
+          <div className="flex gap-2 bg-white/5 backdrop-blur-xl rounded-lg p-1 border border-white/10 flex-shrink-0">
+            <button
+              onClick={() => setMapView("universe")}
+              className={`px-4 py-2 rounded text-sm font-medium transition-all ${
+                mapView === "universe"
+                  ? "bg-[#00eaff]/20 text-[#00eaff]"
+                  : "text-white/60 hover:text-white/80"
+              }`}
+            >
+              Universe
+            </button>
+            <button
+              onClick={() => setMapView("creator")}
+              className={`px-4 py-2 rounded text-sm font-medium transition-all ${
+                mapView === "creator"
+                  ? "bg-[#a24df6]/20 text-[#a24df6]"
+                  : "text-white/60 hover:text-white/80"
+              }`}
+            >
+              Creator
+            </button>
+            <button
+              onClick={() => setMapView("genre")}
+              className={`px-4 py-2 rounded text-sm font-medium transition-all ${
+                mapView === "genre"
+                  ? "bg-[#00eaff]/20 text-[#00eaff]"
+                  : "text-white/60 hover:text-white/80"
+              }`}
+            >
+              Genre
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Advanced Filter Panel */}
+      {showFilters && (
+        <div className="absolute top-20 left-6 z-20 w-80">
+          <Card className="bg-[#0a0b1a]/95 backdrop-blur-xl border-[#00eaff]/30">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-display text-lg font-bold text-white">Filters</h3>
+                <Button
+                  onClick={() => setShowFilters(false)}
+                  variant="ghost"
+                  size="icon"
+                  className="text-white/60 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+
+              {/* Sort */}
+              <div>
+                <label className="text-white/70 text-sm font-semibold block mb-2">Sort By</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="w-full bg-white/5 border border-white/10 rounded text-white px-3 py-2 text-sm"
+                >
+                  <option value="views">Most Views</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="new">Newest</option>
+                </select>
+              </div>
+
+              {/* Minimum Rating */}
+              <div>
+                <label className="text-white/70 text-sm font-semibold block mb-2">
+                  Minimum Rating: {minRating.toFixed(1)}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value={minRating}
+                  onChange={(e) => setMinRating(parseFloat(e.target.value))}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Genres */}
+              <div>
+                <label className="text-white/70 text-sm font-semibold block mb-2">Genres</label>
+                <div className="space-y-2">
+                  {allGenres.map(genre => (
+                    <label key={genre} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedGenres.includes(genre)}
+                        onChange={() => toggleGenre(genre)}
+                        className="rounded border-white/20"
+                      />
+                      <span className="text-white/70 text-sm">{genre}</span>
+                      <span className="text-white/40 text-xs">
+                        ({universeNodes.filter(n => n.genre === genre).length})
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Creators */}
+              <div>
+                <label className="text-white/70 text-sm font-semibold block mb-2">Creators</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {allCreators.map(creator => (
+                    <label key={creator} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedCreators.includes(creator)}
+                        onChange={() => toggleCreator(creator)}
+                        className="rounded border-white/20"
+                      />
+                      <span className="text-white/70 text-sm">@{creator}</span>
+                      <span className="text-white/40 text-xs">
+                        ({universeNodes.filter(n => n.creator === creator).length})
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              {(selectedGenres.length > 0 || selectedCreators.length > 0 || minRating > 0) && (
+                <Button
+                  onClick={clearFilters}
+                  variant="outline"
+                  className="w-full border-white/20 text-white hover:bg-white/5"
+                >
+                  Clear All Filters
+                </Button>
+              )}
+
+              {/* Results count */}
+              <div className="pt-2 border-t border-white/10">
+                <p className="text-white/60 text-sm text-center">
+                  {sortedNodes.length} of {universeNodes.length} universes
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Info Panel */}
       {selectedNode && (
@@ -341,19 +620,77 @@ const ExploreMap = () => {
 
       {/* Controls */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-        <div className="flex gap-2 bg-white/5 backdrop-blur-xl rounded-lg p-2 border border-white/10">
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white">
+        <div className="flex gap-2 bg-white/5 backdrop-blur-xl rounded-lg p-3 border border-white/10">
+          <Button
+            onClick={() => {
+              if (orbitControlsRef.current) {
+                orbitControlsRef.current.object.position.z -= 2;
+              }
+            }}
+            variant="ghost"
+            size="icon"
+            className="text-white/70 hover:text-white hover:bg-white/10"
+            title="Zoom In (Z)"
+          >
             <ZoomIn className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white">
+          <Button
+            onClick={() => {
+              if (orbitControlsRef.current) {
+                orbitControlsRef.current.object.position.z += 2;
+              }
+            }}
+            variant="ghost"
+            size="icon"
+            className="text-white/70 hover:text-white hover:bg-white/10"
+            title="Zoom Out (X)"
+          >
             <ZoomOut className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white">
+          <div className="w-px bg-white/10" />
+          <Button
+            onClick={() => {
+              if (orbitControlsRef.current) {
+                orbitControlsRef.current.reset();
+              }
+            }}
+            variant="ghost"
+            size="icon"
+            className="text-white/70 hover:text-white hover:bg-white/10"
+            title="Reset View (R)"
+          >
             <RotateCcw className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white">
+          <Button
+            onClick={() => {
+              if (selectedNode) {
+                // Animate camera to selected node
+                if (orbitControlsRef.current) {
+                  orbitControlsRef.current.target.set(
+                    selectedNode.position[0],
+                    selectedNode.position[1],
+                    selectedNode.position[2]
+                  );
+                }
+              }
+            }}
+            variant="ghost"
+            size="icon"
+            className="text-white/70 hover:text-white hover:bg-white/10"
+            title="Focus Selected (F)"
+            disabled={!selectedNode}
+          >
             <Grid3x3 className="w-5 h-5" />
           </Button>
+        </div>
+      </div>
+
+      {/* Controls Legend */}
+      <div className="absolute bottom-6 right-24 z-10 text-white/50 text-xs">
+        <div className="bg-white/5 backdrop-blur-xl rounded-lg p-3 border border-white/10 space-y-1">
+          <p>🖱️ Left-click: Rotate</p>
+          <p>🖱️ Right-click: Pan</p>
+          <p>⚙️ Scroll: Zoom</p>
         </div>
       </div>
 
