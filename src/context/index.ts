@@ -14,5 +14,13 @@ export type { AnalyticsMetrics, DailyStats, AnalyticsContextType } from './Analy
 export { FavoritesProvider, useFavorites } from './FavoritesContext';
 export type { Favorite, FavoritesContextType } from './FavoritesContext';
 
+// Remix Context
+export { RemixProvider, useRemix } from './RemixContext';
+export type { RemixVersion, RemixContextType } from './RemixContext';
+
+// Collaboration Context
+export { CollaborationProvider, useCollaboration } from './CollaborationContext';
+export type { Collaborator, CollaborationProject, Comment, CollaborationContextType, PermissionLevel } from './CollaborationContext';
+
 // App Provider
 export { AppProvider } from './AppProvider';
